@@ -1,6 +1,2 @@
-[pi_prod]
-192.168.3.252 ansible_user=pi
-192.168.3.253 ansible_user=pi
-
-[pitest]
-192.168.3.215 ansible_user=pi
+[pi_server]
+192.168.0.100 ansible_user=altuser ansible_port=22
