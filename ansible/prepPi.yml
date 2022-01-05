@@ -1,8 +1,9 @@
 ---
 
-- hosts: pitest
+- hosts: pi_server
   gather_facts: True
   roles:
+    - { role: os_users }
     - { role: os_base }
     - { role: os_kernel }
     - { role: os_base_packages }
