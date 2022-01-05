@@ -7,7 +7,6 @@
     install_recommends: yes
     name: "{{ packages }}"
     state: present
-    #dpkg_options: 'force-confnew'
   vars:
     packages:
       - aptitude
