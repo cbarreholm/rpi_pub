@@ -9,13 +9,38 @@
   tags: users
 
 
+- name: Update `pi` with auto generated password
+  become: yes
+  user:
+    name: pi
+    password: "{{ lookup('password', 'credentials/pi/password.txt encrypt=md5_crypt') }}"
+  when: ansible_user_id != 'pi'
+  tags: users
+
 - name: "Disable 'pi' user"
   become: yes
   user:
     name: pi
     shell: /sbin/nologin
     password_lock: true
+    expires: 1.0
   when: ansible_user_id != 'pi'
   tags: users
 
 
+- name: "Create SSH group 'ssh-users'"
+  become: yes
+  group:
+    name: ssh-users
+  when: ansible_user_id != 'pi'
+  tags: ssh
+
+
+- name: "Adding user '{{ ansible_user_id }}'' to 'ssh-users'"
+  become: yes
+  user: 
+    name: "{{ ansible_user_id }}"
+    groups: [ssh-users]
+    append: yes
+  when: ansible_user_id != 'pi'
+  tags: ssh
