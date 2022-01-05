@@ -12,9 +12,9 @@ I wanted to learn ansible and enjoy running pihole on two Pi Zero W's. I also te
 I'll list some features of this repository and ansible setup. This can also be known as "What does this playbook do for me?". 
 
 ## OS (Base)
-* Setup System Timezone (America/New_York)
-* Setup System Localization and Language (en_US.UTF-8)
-* Setup Keyboard Layout (US)
+* Setup System Timezone (default: Europe/Stockholm)
+* Setup System Localization and Language (default: en_US.UTF-8)
+* Setup Keyboard Layout (default: US)
 * Configure System Package Manager (apt)
     * Don't acquire extra languages
     * Use IPV4 for downloads
@@ -97,12 +97,26 @@ I'll list some features of this repository and ansible setup. This can also be k
 # Pre-requirements and Assumptions
 * Your have burned latest raspbian (buster) image to SD card
 * You have done 'touch /boot/ssh" to enable headless ssh login
-* You have done 'ssh-copy-id -i ~/.ssh/id_rsa.pub pi@<your pi's IP address>'
-* You can successfully login to pi@<your pi's IP address> using passwordless (key-based) authentication with no errors.
+* You have created an alternative user with sudo permissions. You should not run as user `pi`, which will be disabled
+* You have done 'ssh-copy-id -i ~/.ssh/id_rsa.pub <user>@<your pi's IP address>'
+* You can successfully login to <user>@<your pi's IP address> using passwordless (key-based) authentication with no errors.
+* You can sucessfully run sudo without as password. Verify by running `sudo visudo`
+* OPTIONAL: You have run `apt update` to catch issues such as repos becomming `oldstable`
 * OPTIONAL: install NMAP on the host system you run ansible from. This will enable the discoverPi.sh script to help you find your pi on the network.
 
+## Passwordless sudoer
+The alternative user needs passwordless sudo permissions, which can be achieved like this 
+
+```
+USER=myalternativeuser
+SUDOERSDFILE=/etc/sudoers.d/099_altuser-nopasswd
+echo "$USER ALL=(ALL) NOPASSWD: ALL" > $SUDOERSDFILE
+chmod 0440 $SUDOERSDFILE
+chown root:root $SUDOERSDFILE    
+```
+
 # How To Get This Repository
-git clone git@github.com:raajivrekha/rpi_pub.git
+git clone git@github.com:cbarreholm/rpi_pub.git
 
 ## Setup
 #### Discover your Pi's IP Address on your network
@@ -111,7 +125,7 @@ git clone git@github.com:raajivrekha/rpi_pub.git
 * View the output file called "inventory.txt" in rpi_pub folder
 
 #### Use the IP that was discovered for your pi as inventory
-* edit the rpi_pub/ansible/inventory file to include the IP that was discovered in the [rpitest] group
+* edit the rpi_pub/ansible/inventory file to include the IP that was discovered in the [rpi_server] group
 
 #### Edit the rpi_pub/ansible/prepPi.yml file to play with roles and tags, but this is optional and advanced
 
@@ -130,3 +144,6 @@ git clone git@github.com:raajivrekha/rpi_pub.git
     * https://lwn.net/Articles/720071/
     * https://lwn.net/Articles/720675/
 * Extending the life of your Raspberry PI SD Card - https://domoticproject.com/extending-life-raspberry-pi-sd-card/
+
+# Acknowledgement
+This repo is a fork of https://github.com/raajivrekha/rpi_pub created by Raajiv Rekha

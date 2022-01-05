@@ -1,0 +1,21 @@
+---
+# tasks file for OS users
+
+
+- name: "Not allowed to run as 'pi' user. Create alternative user first."
+  fail:
+    msg: pi
+  when: ansible_user_id == 'pi'
+  tags: users
+
+
+- name: "Disable 'pi' user"
+  become: yes
+  user:
+    name: pi
+    shell: /sbin/nologin
+    password_lock: true
+  when: ansible_user_id != 'pi'
+  tags: users
+
+
