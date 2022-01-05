@@ -89,6 +89,8 @@ I'll list some features of this repository and ansible setup. This can also be k
 * Kernel Scheduler change from deadline to kyber and with Persistence
 
 ## OS Services Setups
+* Auto Update
+   * Automatic updates. Warning! Updates may break the system.
 * SSH
    * SSH Security Hardening
 * RSYSLOG
@@ -116,7 +118,7 @@ chown root:root $SUDOERSDFILE
 ```
 
 # How To Get This Repository
-git clone git@github.com:cbarreholm/rpi_pub.git
+`git clone git@github.com:cbarreholm/rpi_pub.git`
 
 ## Setup
 #### Discover your Pi's IP Address on your network
@@ -144,6 +146,7 @@ git clone git@github.com:cbarreholm/rpi_pub.git
     * https://lwn.net/Articles/720071/
     * https://lwn.net/Articles/720675/
 * Extending the life of your Raspberry PI SD Card - https://domoticproject.com/extending-life-raspberry-pi-sd-card/
+* Raspberry Pi Hardening Guide - https://chrisapproved.com/blog/raspberry-pi-hardening.html
 
 # Acknowledgement
 This repo is a fork of https://github.com/raajivrekha/rpi_pub created by Raajiv Rekha

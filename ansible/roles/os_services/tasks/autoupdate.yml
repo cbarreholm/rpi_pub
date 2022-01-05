@@ -1,0 +1,19 @@
+---
+# tasks file for unattended auto update
+
+- name: Install unattended upgrades package  (if not present)
+  become: yes
+  apt: 
+    install_recommends: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - unattended-upgrades 
+      - apt-listchanges
+      - apticron
+  tags: autoupdate
+
+- name: Parse and copy 50unattended-upgrades.j2
+  become: yes
+  template: src=50unattended-upgrades.j2 dest=/etc/apt/apt.conf.d/ owner=root group=root mode=0644
