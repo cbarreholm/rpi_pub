@@ -1,10 +1,10 @@
 ---
 # tasks file for os
 
-- name: Set timezone to America/New_York
+- name: Set timezone to '{{ config_timezone }}'
   become: true
   timezone:
-    name: America/New_York
+    name: "{{ config_timezone }}"
   tags: timezone
 
 - name: Ensure localisation files for system locale '{{ config_system_locale }}' are available
@@ -46,12 +46,12 @@
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
   tags: locale
 
-- name: Set US Keyboard Layout
+- name: Set Keyboard Layout to {{ config_keyboard_layout }}
   become: yes
   lineinfile:
     path: /etc/default/keyboard
     regexp: "^XKBLAYOUT="
-    line: "XKBLAYOUT=\"us\""
+    line: "XKBLAYOUT=\"{{config_keyboard_layout}}\""
     state: present
   tags: keyboard
 
