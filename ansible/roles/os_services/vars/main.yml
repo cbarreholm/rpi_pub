@@ -1,2 +1,23 @@
 ---
 # vars file for os_services
+
+# Check with: resolvconf -l
+config_firewall_dns_ip: '8.8.8.8'
+
+# Allow 
+config_firewall_apt_update_ips:  
+  #	/etc/apt/sources.list raspbian.raspberrypi.org
+  - 93.93.128.193
+  # /etc/apt/sources.list.d/raspi.list - archive.raspberrypi.org
+  - 176.126.240.86
+  - 93.93.135.141
+  - 93.93.130.212
+  - 93.93.135.118
+  - 46.235.230.122
+  - 176.126.240.84
+  - 93.93.135.117
+  - 176.126.240.167
+  - 46.235.231.111
+  - 46.235.227.39
+  - 46.235.231.145
+  - 46.235.231.151

@@ -1,6 +1,8 @@
 ---
 # tasks file for os_servies role
 
+- include: firewall.yml
+  tags: firewall
 - include: autoupdate.yml
   tags: autoupdate
 - include: ssh.yml
