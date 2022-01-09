@@ -70,7 +70,6 @@
           "--force-confdef";
           "--force-confold";
       }
-
   tags: apt
 
 - name: Fixup APT Cache
@@ -83,6 +82,14 @@
       Dir::Cache::pkgcache "";
       Dir::Cache::srcpkgcache "";
   tags: apt
+
+- name: Select raspbian mirror
+  become: yes
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb) (http.*) (.*) (.*) (.*) (.*) (.*)$'
+    replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
+  tags: apt-sources
 
 - name: obtain system PARTUUID for /boot
   become: yes
