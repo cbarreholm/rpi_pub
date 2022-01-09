@@ -158,7 +158,6 @@
     validate: '/usr/sbin/sshd -T -f %s'
   tags: ssh
 
-
 - name: Reload ssh
   become: yes
   service: 

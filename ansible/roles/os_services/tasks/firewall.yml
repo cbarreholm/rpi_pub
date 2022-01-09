@@ -1,0 +1,58 @@
+---
+# tasks file for firewall baseline
+
+- name: Install ufw firewall package  (if not present)
+  become: yes
+  apt: 
+    install_recommends: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - ufw
+  tags: firewall
+
+- name: Default deny incoming
+  become: yes
+  ufw:
+    default: deny
+    direction: incoming
+  tags: firewall
+
+- name: Default deny outgoing
+  become: yes
+  ufw:
+    default: deny
+    direction: outgoing
+  tags: firewall
+
+# Important to avoid locking us out
+- name: Firewall limit ssh
+  become: yes
+  ufw:
+    rule: limit 
+    to_port: ssh
+    proto: tcp
+  tags: firewall
+
+- name: Allow DNS
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ config_firewall_dns_ip }}" 
+    to_port: "53"
+    proto: udp
+  tags: firewall
+
+- name: Allow apt updates
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ item }}" 
+    to_port: http
+    proto: tcp
+  loop: "{{ config_firewall_apt_update_ips }}"    
+  tags: firewall
+
