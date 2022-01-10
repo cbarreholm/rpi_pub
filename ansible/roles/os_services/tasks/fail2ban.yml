@@ -1,0 +1,48 @@
+---
+# tasks file for fail2ban
+
+- name: Install fail2ban package  (if not present)
+  become: yes
+  apt: 
+    install_recommends: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - fail2ban
+  tags: fail2ban
+
+- name: Create a symbolic link
+  become: yes
+  file:
+    src: /etc/fail2ban/filter.d/apache-badbots.conf
+    dest: /etc/fail2ban/filter.d/nginx-badbots.conf
+    owner: root
+    group: root
+    state: link  
+  notify: Restart fail2ban
+    
+- name: Copy jail.local
+  become: yes
+  copy: 
+    src: fail2ban/jail.local
+    dest: /etc/fail2ban/ 
+    owner: root 
+    group: root 
+    mode: '0644'
+  notify: Restart fail2ban
+
+ 
+- name: Copy nginx-noscript.conf
+  become: yes
+  copy: 
+    src: fail2ban/nginx-noscript.conf
+    dest: /etc/fail2ban/filter.d/
+    owner: root 
+    group: root 
+    mode: '0644'
+  notify: Restart fail2ban
+
+
+
+
