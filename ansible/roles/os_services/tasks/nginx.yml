@@ -1,0 +1,50 @@
+---
+# tasks file for nginx
+
+- name: Install nginx package  (if not present)
+  become: yes
+  apt: 
+    install_recommends: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - nginx
+      - certbot 
+      - python3-certbot-nginx
+  tags: nginx
+
+- name: Remove default site
+  become: yes
+  file: 
+    dest: /etc/nginx/sites-enabled/default
+    state: absent
+  tags: nginx
+  notify: Restart nginx
+  
+- name: Copy reverse-proxy.conf to sites-available
+  become: yes
+  copy: 
+    src: nginx/reverse-proxy.conf
+    dest: /etc/nginx/sites-available/
+    owner: root 
+    group: root 
+    mode: '0644'
+  tags: nginx
+  notify: Restart nginx
+
+- name: Enable reverse-proxy
+  become: yes
+  file:
+    src: /etc/nginx/sites-available/reverse-proxy.conf
+    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+    owner: root
+    group: root
+    state: link  
+  tags: nginx
+  notify: Restart nginx
+
+#- name: Install Let's Encrypt
+#  become: yes
+#  shell:
+#    cmd: certbot --nginx
