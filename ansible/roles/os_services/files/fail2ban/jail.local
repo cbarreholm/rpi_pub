@@ -1,0 +1,25 @@
+[sshd]
+enabled = true
+
+[nginx-botsearch]
+enabled = true
+port = http,https
+filter = nginx-botsearch
+logpath = %(nginx_error_log)s
+bantime = 30d
+
+[nginx-noscript]
+enabled = true
+port = http,https
+filter = nginx-noscript
+logpath = %(nginx_access_log)s
+maxretry = 1
+bantime = 30d
+
+[nginx-badbots]
+enabled = true
+port = http,https
+filter = nginx-badbots
+logpath = %(nginx_access_log)s
+maxretry = 1
+bantime = 30d
