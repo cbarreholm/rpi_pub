@@ -17,7 +17,7 @@
 - name: Copy 50unattended-upgrades
   become: yes
   copy: 
-    src: 50unattended-upgrades
+    src: autoupdate/50unattended-upgrades
     dest: /etc/apt/apt.conf.d/
     owner: root 
     group: root 
