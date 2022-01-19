@@ -93,6 +93,12 @@ I'll list some features of this repository and ansible setup. This can also be k
    * Automatic updates. Warning! Updates may break the system.
 * SSH
    * SSH Security Hardening
+* Firewall
+   * Local firewall
+* nginx
+   * Light weight web server including Let's Encrypt certificates
+* fail2ban
+   * Network security tool that scans log files and bans IP addresses
 * RSYSLOG
    * Enable High Precision Timestamping
 
@@ -110,7 +116,7 @@ I'll list some features of this repository and ansible setup. This can also be k
 The alternative user needs passwordless sudo permissions, which can be achieved like this 
 
 ```
-USER=myalternativeuser
+USER=paj
 SUDOERSDFILE=/etc/sudoers.d/099_altuser-nopasswd
 echo "$USER ALL=(ALL) NOPASSWD: ALL" > $SUDOERSDFILE
 chmod 0440 $SUDOERSDFILE
