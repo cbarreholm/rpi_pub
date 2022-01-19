@@ -1,9 +1,9 @@
 ---
 # vars file for os
 
+config_system_hostname: 'raspberrypi'
 config_system_locale: 'en_US.UTF-8'
 config_system_language: 'en_US.UTF-8'
 config_timezone: 'Europe/Stockholm'
 config_keyboard_layout: 'us'
-# config_apt_mirror_url: 'http://raspbian.raspberrypi.org/raspbian/'
 config_apt_mirror_url: 'http://archive.raspbian.org/raspbian/'
