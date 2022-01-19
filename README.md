@@ -93,6 +93,12 @@ I'll list some features of this repository and ansible setup. This can also be k
    * Automatic updates. Warning! Updates may break the system.
 * SSH
    * SSH Security Hardening
+* Firewall
+   * Local firewall
+* nginx
+   * Light weight web server including Let's Encrypt certificates
+* fail2ban
+   * Network security tool that scans log files and bans IP addresses
 * RSYSLOG
    * Enable High Precision Timestamping
 
