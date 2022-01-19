@@ -1,8 +1,15 @@
 ---
 # vars file for os_services
 
+##################################
+# Firewall configuration variables
+##################################
+
+
 # Check with: resolvconf -l
 config_firewall_dns_ip: '8.8.8.8'
+config_firewall_nginx_downstream_ip: "10.0.0.1"
+config_firewall_nginx_downstream_port: "8080"
 
 # Allow 
 config_firewall_apt_update_ips:  
@@ -22,3 +29,12 @@ config_firewall_apt_update_ips:
   - 46.235.231.111
   - 46.235.231.145
   - 46.235.231.151
+
+
+###############################
+# Nginx configuration variables
+###############################
+
+config_nginx_site_src_dir: 'nginx/'
+config_nginx_site: 'sample-reverse-proxy.conf'
+

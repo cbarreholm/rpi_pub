@@ -5,11 +5,8 @@
   become: yes
   apt: 
     install_recommends: yes
-    name: "{{ packages }}"
+    name: "ufw"
     state: present
-  vars:
-    packages:
-      - ufw
   tags: firewall
 
 - name: Default deny incoming
@@ -35,7 +32,23 @@
     proto: tcp
   tags: firewall
 
-- name: Allow DNS
+- name: Allow HTTP
+  become: yes
+  ufw:
+    rule: allow 
+    to_port: http
+    proto: tcp
+  tags: firewall
+
+- name: Allow HTTPS
+  become: yes
+  ufw:
+    rule: allow 
+    to_port: https
+    proto: tcp
+  tags: firewall
+
+- name: Allow DNS connections to DNS server
   become: yes
   ufw:
     rule: allow
@@ -45,7 +58,7 @@
     proto: udp
   tags: firewall
 
-- name: Allow apt updates
+- name: Allow apt updates to connect to specific IPs
   become: yes
   ufw:
     rule: allow
@@ -56,3 +69,18 @@
   loop: "{{ config_firewall_apt_update_ips }}"    
   tags: firewall
 
+- name: Enable firewall
+  become: yes
+  ufw:
+    state: enabled
+  tags: firewall
+
+- name: Allow outbound proxy pass
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{config_firewall_nginx_downstream_ip}}"
+    to_port: "{{config_firewall_nginx_downstream_port}}"
+    proto: tcp
+  tags: firewall
