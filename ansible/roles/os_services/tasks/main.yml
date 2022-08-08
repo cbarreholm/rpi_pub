@@ -9,11 +9,5 @@
   tags: ssh
 - include: rsyslog.yml
   tags: rsyslog
-- include: nginx.yml
-  tags: nginx
 - include: fail2ban.yml
   tags: fail2ban
-#- include: chrony.yml
-#  tags: chrony
-#- include: unattended-upgrades.yml
-#  tags: unattended-upgrades

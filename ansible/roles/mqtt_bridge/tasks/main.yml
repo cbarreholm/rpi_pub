@@ -1,0 +1,62 @@
+---
+# tasks file for mqtt bridge
+
+- name: Install Packages needed for Mi Flora MQTT Bridge
+  become: yes
+  apt: 
+    install_recommends: yes
+    update_cache: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python3 
+      - python3-pip 
+      - bluetooth 
+      - pi-bluetooth 
+      - bluez
+      - rfkill # Not strictly needed but convenient
+  tags: mi_flora
+
+
+- name: Create directory for source files
+  become: yes
+  file: 
+    path: /opt/miflora-mqtt-daemon
+    state: directory
+  tags: mi_flora
+
+# There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
+- name: Disable firewall
+  become: yes
+  ufw:
+    state: disabled
+  tags: mi_flora
+
+
+- name: Download source files from github
+  become: yes
+  git:
+      repo: https://github.com/ThomDietrich/miflora-mqtt-daemon.git
+      dest: /opt/miflora-mqtt-daemon
+      version: dcd657a8148189568ac60862e33c9d910590611e
+  tags: mi_flora
+
+
+- name: Install
+  become: yes
+  command: pip3 install -r requirements.txt
+  args:
+      chdir: /opt/miflora-mqtt-daemon
+
+- name: Copy configuration in place
+  become: yes
+  ansible.builtin.template:
+    src: miflora-mqtt-daemon/config.ini
+    dest: /opt/miflora-mqtt-daemon/config.ini
+
+- name: Enable firewall
+  become: yes
+  ufw:
+    state: enabled
+  tags: mi_flora

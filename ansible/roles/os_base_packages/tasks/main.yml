@@ -5,21 +5,23 @@
   become: yes
   apt: 
     install_recommends: yes
+    update_cache: yes
     name: "{{ packages }}"
     state: present
   vars:
     packages:
+      ### The following may have been a legacy from Buster, since they are not found in Bullseye based Raspbian 
       - aptitude
+      - dkms
+      - console-data
+      - xkbset
+      - dnsutils
+      - screen
       - python3-apt
       - apt-transport-https
       - raspberrypi-kernel-headers
-      - dkms
       - debian-archive-keyring
-      - console-data
-      - xkbset
       - locales-all
-      - dnsutils
-      - screen
       - rsync
       - wget
       - curl
@@ -27,4 +29,4 @@
       - git
       - ttf-mscorefonts-installer
       - iotop
-    tags: basepackages
+  tags: basepackages
