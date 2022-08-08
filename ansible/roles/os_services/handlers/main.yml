@@ -1,12 +1,6 @@
 ---
 # handlers file for os_services
 
-- name: Restart nginx
-  become: yes
-  service:
-    name: nginx
-    state: restarted
-
 - name: Restart fail2ban
   become: yes
   service:

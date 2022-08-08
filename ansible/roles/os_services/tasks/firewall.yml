@@ -53,7 +53,7 @@
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ config_firewall_dns_ip }}" 
+    to_ip: "{{ dns_ip }}" 
     to_port: "53"
     proto: udp
   tags: firewall
@@ -69,18 +69,19 @@
   loop: "{{ config_firewall_apt_update_ips }}"    
   tags: firewall
 
+- name: Allow outbound to downstream service
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{firewall_downstream_ip}}"
+    to_port: "{{firewall_downstream_port}}"
+    proto: tcp
+  tags: firewall
+
 - name: Enable firewall
   become: yes
   ufw:
     state: enabled
   tags: firewall
 
-- name: Allow outbound proxy pass
-  become: yes
-  ufw:
-    rule: allow
-    direction: out
-    to_ip: "{{config_firewall_nginx_downstream_ip}}"
-    to_port: "{{config_firewall_nginx_downstream_port}}"
-    proto: tcp
-  tags: firewall
