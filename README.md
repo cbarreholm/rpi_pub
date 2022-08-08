@@ -112,8 +112,10 @@ I'll list some features of this repository and ansible setup. This can also be k
 * OPTIONAL: You have run `apt update` to catch issues such as repos becomming `oldstable`
 * OPTIONAL: install NMAP on the host system you run ansible from. This will enable the discoverPi.sh script to help you find your pi on the network.
 
+The first steps can be achieved by configuring those details while burning the OS image.
+
 ## Passwordless sudoer
-The alternative user needs passwordless sudo permissions, which can be achieved like this 
+The alternative user needs passwordless sudo permissions, which can be achieved like this (or while burning image): 
 
 ```
 USER=myalternativeuser

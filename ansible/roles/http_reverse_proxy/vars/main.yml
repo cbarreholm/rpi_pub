@@ -1,0 +1,12 @@
+---
+# vars file for http_reverse_proxy
+
+###############################
+# Nginx configuration variables
+###############################
+
+config_nginx_site_src_dir: 'nginx/'
+
+#nginx_site: 'sample-reverse-proxy.conf'
+#nginx_certbot_domains: 'example.com'
+
