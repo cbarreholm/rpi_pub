@@ -1,0 +1,6 @@
+---
+
+- hosts: http_reverse_proxy_server
+  gather_facts: True
+  roles:
+    - { role: http_reverse_proxy, tags: http_reverse_proxy }
