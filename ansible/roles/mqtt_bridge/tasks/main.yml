@@ -55,6 +55,27 @@
     src: miflora-mqtt-daemon/config.ini
     dest: /opt/miflora-mqtt-daemon/config.ini
 
+- name: Copy service in place
+  become: yes
+  copy:
+    remote_src: yes
+    src: /opt/miflora-mqtt-daemon/template.service
+    dest: /etc/systemd/system/miflora.service
+
+- name: Reload service
+  become: yes
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: miflora
+
+- name: Enable service 
+  become: yes
+  ansible.builtin.systemd:
+    enabled: yes
+    name: miflora
+
+
 - name: Enable firewall
   become: yes
   ufw:
