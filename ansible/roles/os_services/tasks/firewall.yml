@@ -69,6 +69,19 @@
   loop: "{{ config_firewall_apt_update_ips }}"    
   tags: firewall
 
+- name: Allow ntp to connect to specific IPs
+  # Important since the pi is missing a RTC and easily looses track of time
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ item }}" 
+    to_port: ntp
+    proto: udp
+  loop: "{{ config_firewall_ntp_ips }}"    
+  tags: firewall
+
+
 - name: Allow outbound to downstream service
   become: yes
   ufw:
