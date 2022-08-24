@@ -39,7 +39,7 @@
   git:
       repo: https://github.com/ThomDietrich/miflora-mqtt-daemon.git
       dest: /opt/miflora-mqtt-daemon
-      version: dcd657a8148189568ac60862e33c9d910590611e
+      version: 50649b39f30faef6d8e04711e06c13583d16f7f8
   tags: mi_flora
 
 
