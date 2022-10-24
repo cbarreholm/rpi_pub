@@ -82,6 +82,17 @@
   tags: firewall
 
 
+- name: Allow certbot/letsencrypt connect to specific IPs
+  become: yes
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ item }}" 
+    to_port: https
+    proto: tcp
+  loop: "{{ config_firewall_letsencrypt_ips }}"    
+  tags: firewall
+
 - name: Allow outbound to downstream service
   become: yes
   ufw:
