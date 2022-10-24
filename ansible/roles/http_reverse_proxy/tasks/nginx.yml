@@ -22,10 +22,10 @@
   tags: nginx
   notify: Restart nginx
   
-- name: Copy {{ nginx_site }} to sites-available
+- name: Template {{ nginx_site }} to sites-available
   become: yes
-  copy: 
-    src: "{{config_nginx_site_src_dir}}{{ nginx_site }}"
+  ansible.builtin.template:
+    src: "{{ config_nginx_site_src_dir }}{{ nginx_site }}"
     dest: /etc/nginx/sites-available/
     owner: root 
     group: root 
@@ -47,5 +47,5 @@
 - name: Install Let's Encrypt
   become: yes
   shell:
-    cmd: certbot --nginx -n -d {{ nginx_certbot_domains }}
+    cmd: certbot --nginx -n --agree-tos --email {{ nginx_certbot_email }} -d {{ nginx_certbot_domains }}
   tags: nginx
