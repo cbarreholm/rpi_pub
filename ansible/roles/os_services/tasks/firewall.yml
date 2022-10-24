@@ -2,7 +2,7 @@
 # tasks file for firewall baseline
 
 - name: Install ufw firewall package  (if not present)
-  become: yes
+  become: true
   apt: 
     install_recommends: yes
     name: "ufw"
@@ -10,14 +10,14 @@
   tags: firewall
 
 - name: Default deny incoming
-  become: yes
+  become: true
   ufw:
     default: deny
     direction: incoming
   tags: firewall
 
 - name: Default deny outgoing
-  become: yes
+  become: true
   ufw:
     default: deny
     direction: outgoing
@@ -25,7 +25,7 @@
 
 # Important to avoid locking us out
 - name: Firewall limit ssh
-  become: yes
+  become: true
   ufw:
     rule: limit 
     to_port: ssh
@@ -33,7 +33,7 @@
   tags: firewall
 
 - name: Allow HTTP
-  become: yes
+  become: true
   ufw:
     rule: allow 
     to_port: http
@@ -41,7 +41,7 @@
   tags: firewall
 
 - name: Allow HTTPS
-  become: yes
+  become: true
   ufw:
     rule: allow 
     to_port: https
@@ -49,7 +49,7 @@
   tags: firewall
 
 - name: Allow DNS connections to DNS server
-  become: yes
+  become: true
   ufw:
     rule: allow
     direction: out
@@ -59,7 +59,7 @@
   tags: firewall
 
 - name: Allow apt updates to connect to specific IPs
-  become: yes
+  become: true
   ufw:
     rule: allow
     direction: out
@@ -71,7 +71,7 @@
 
 - name: Allow ntp to connect to specific IPs
   # Important since the pi is missing a RTC and easily looses track of time
-  become: yes
+  become: true
   ufw:
     rule: allow
     direction: out
@@ -83,7 +83,7 @@
 
 
 - name: Allow certbot/letsencrypt connect to specific IPs
-  become: yes
+  become: true
   ufw:
     rule: allow
     direction: out
@@ -93,18 +93,18 @@
   loop: "{{ config_firewall_letsencrypt_ips }}"    
   tags: firewall
 
-- name: Allow outbound to downstream service
-  become: yes
+- name: Allow outbound to upstream service
+  become: true
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{firewall_downstream_ip}}"
-    to_port: "{{firewall_downstream_port}}"
+    to_ip: "{{firewall_upstream_ip}}"
+    to_port: "{{firewall_upstream_port}}"
     proto: tcp
   tags: firewall
 
 - name: Enable firewall
-  become: yes
+  become: true
   ufw:
     state: enabled
   tags: firewall
