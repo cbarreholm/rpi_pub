@@ -24,6 +24,19 @@ config_firewall_apt_update_ips:
   - 46.235.231.145
   - 46.235.231.151
 
+  # security.debian.org
+  - 151.101.2.132
+  - 151.101.130.132
+  - 151.101.194.132
+  - 151.101.66.132
+  # deb.debian.org
+  - 151.101.86.132
+
+config_firewall_letsencrypt_ips:  
+  # acme-v02.api.letsencrypt.org
+  - 172.65.32.248
+
+
 config_firewall_ntp_ips:
   # 0.debian.pool.ntp.org
   - 193.182.111.141
