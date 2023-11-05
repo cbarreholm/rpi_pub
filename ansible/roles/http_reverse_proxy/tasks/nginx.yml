@@ -2,7 +2,7 @@
 # tasks file for nginx
 
 - name: Install nginx package  (if not present)
-  become: yes
+  become: true
   apt: 
     install_recommends: yes
     name: "{{ packages }}"
@@ -14,16 +14,47 @@
       - python3-certbot-nginx
   tags: nginx
 
+- name: Copy nginx.conf
+  become: true
+  copy:
+    src: "{{ config_nginx_site_src_dir }}nginx.conf"
+    dest: /etc/nginx/nginx.conf
+    owner: root 
+    group: root 
+    mode: '0644'
+  notify: Restart nginx
+  tags: nginx
+
 - name: Remove default site
-  become: yes
+  become: true
   file: 
     dest: /etc/nginx/sites-enabled/default
     state: absent
-  tags: nginx
   notify: Restart nginx
-  
+  tags: nginx
+
+- name: Create directory for client certificate
+  become: true
+  file: 
+    path: /etc/nginx/certificates/
+    state: directory
+    owner: root 
+    group: root 
+    mode: '0644'
+  tags: nginx
+
+- name: Copy {{ nginx_clientca_crt }} 
+  become: true
+  copy:
+    src: "{{ config_nginx_site_src_dir }}{{ nginx_clientca_crt }}"
+    dest: /etc/nginx/certificates/clientCA.crt
+    owner: root 
+    group: root 
+    mode: '0644'
+  tags: nginx
+
 - name: Template {{ nginx_site }} to sites-available
-  become: yes
+  become: true
   ansible.builtin.template:
     src: "{{ config_nginx_site_src_dir }}{{ nginx_site }}"
     dest: /etc/nginx/sites-available/
@@ -31,10 +62,9 @@
     group: root 
     mode: '0644'
   tags: nginx
-  notify: Restart nginx
 
 - name: Enable {{ config_nginx_site }}
-  become: yes
+  become: true
   file:
     src: "/etc/nginx/sites-available/{{ nginx_site }}"
     dest: "/etc/nginx/sites-enabled/{{ nginx_site }}"
@@ -45,7 +75,7 @@
   notify: Restart nginx
 
 - name: Install Let's Encrypt
-  become: yes
+  become: true
   shell:
     cmd: certbot --nginx -n --agree-tos --email {{ nginx_certbot_email }} -d {{ nginx_certbot_domains }}
   tags: nginx
