@@ -1,6 +1,13 @@
 ---
 # tasks file for os
 
+- name: Gather os specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
+    - "{{ ansible_distribution }}.yml"
+  tags: vars
+
 - name: Set timezone to '{{ config_timezone }}'
   become: true
   timezone:
@@ -83,19 +90,38 @@
       Dir::Cache::srcpkgcache "";
   tags: apt
 
-- name: Select raspbian mirror
+- name: Select raspbian mirror to {{ config_apt_mirror_url }}
   become: yes
   replace:
     path: /etc/apt/sources.list
-    regexp: '^(deb) (http.*) (.*) (.*) (.*) (.*) (.*)$'
+    regexp: '^(deb) (http.*) ([a-z]*(?!-security)) (.*) (.*) (.*) (.*)$'
     replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
   tags: apt-sources
+
+
+- name: Select raspbian security mirror to {{ config_apt_security_mirror_url }}
+  become: yes
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb) (http.*) ([a-z]*(-security)) (.*) (.*) (.*) (.*)$'
+    replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
+  tags: apt-sources
+
 
 - name: obtain system PARTUUID for /boot
   become: yes
   command: "findmnt -no PARTUUID /boot"
   register: var_part_boot
   changed_when: false
+  when: ansible_distribution_major_version == "10"
+  tags: fstabsetup
+
+- name: obtain system PARTUUID for /boot/firmware
+  become: yes
+  command: "findmnt -no PARTUUID /boot/firmware"
+  register: var_part_boot_firmware
+  changed_when: false
+  when: ansible_distribution_major_version == "12"
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /
@@ -105,30 +131,12 @@
   changed_when: false
   tags: fstabsetup
 
-- name: Zero out system fstab file
+- name: Setup fstab file for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
   become: yes
-  copy:
-    content: ""
-    dest: /etc/fstab
-    force: yes
-  changed_when: false
-  tags: fstabsetup
-
-- name: Setup fstab file
-  become: yes
-  copy:
-    dest: "/etc/fstab"
-    content: |
-      PARTUUID={{ var_part_boot.stdout }}  /boot     auto  defaults,noatime                    0 2
-      PARTUUID={{ var_part_root.stdout }}  /         ext4  defaults,noatime,commit=1800        0 1
-      /tmp                  /tmp      tmpfs rw,bind,noatime,nodev,nosuid,noexec 0 0
-      /opt                  /opt      tmpfs rw,bind,noatime,nodev,nosuid        0 0
-      /home                 /home     tmpfs rw,bind,noatime,nodev               0 0
-      /var                  /var      tmpfs rw,bind,noatime,nodev,nosuid        0 0
-      /var/log              /var/log  tmpfs rw,bind,noatime,nodev,nosuid,noexec 0 0
-      /var/tmp              /var/tmp  tmpfs rw,bind,noatime,nodev,nosuid,noexec 0 0
-      proc                  /proc     proc  defaults                            0 0
-      tmpfs                 /dev/shm  tmpfs noatime,noexec,nodev,nosuid         0 0
+  template: src={{ item }} dest=/etc/fstab backup=yes
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.fstab.j2"
+    - "{{ ansible_distribution }}.fstab.j2"
   changed_when: false
   tags: fstabsetup
 
