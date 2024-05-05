@@ -1,0 +1,16 @@
+connection primary-mqtt-broker-bridge
+address {{ mosquitto_mqtt_bridge_ip }}:{{ mosquitto_mqtt_bridge_port }}
+remote_username {{ mosquitto_mqtt_bridge_username }}
+remote_password {{ mosquitto_mqtt_bridge_password }}
+bridge_insecure false
+try_private false
+bridge_protocol_version mqttv311
+
+# Out to primary mqtt instance
+topic homeassistant/# out 0
+
+# In from primary mqtt instance
+topic clients/# in 0 primary/$SYS/broker/ $SYS/broker/
+
+# In and Out to primary mqtt instance
+topic {{ zigbee2mqtt_mqtt_base_topic }}/# both 0

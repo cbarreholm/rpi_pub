@@ -1,0 +1,6 @@
+---
+
+- hosts: mosquitto_server
+  gather_facts: True
+  roles:
+    - { role: mosquitto, tags: mosquitto }
