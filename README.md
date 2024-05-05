@@ -103,8 +103,13 @@ I'll list some features of this repository and ansible setup. This can also be k
    * Enable High Precision Timestamping
 
 # Pre-requirements and Assumptions
-* Your have burned latest raspbian (buster) image to SD card
+* Your have burned latest (buster or even bookworm) raspbian (preferably 64 bit) image to SD card
 * You have done 'touch /boot/ssh" to enable headless ssh login
+* You have set up Wifi with wpa_supplicant.conf or for Bookworm use the imager
+  Or add an out of range connection
+```
+sudo nmcli connection add type wifi con-name TheConnectionName ssid TheSsId 802-11-wireless-security.key-mgmt WPA-PSK 802-11-wireless-security.psk TheSecret
+```
 * You have created an alternative user with sudo permissions. You should not run as user `pi`, which will be disabled
 * You have done 'ssh-copy-id -i ~/.ssh/id_rsa.pub <user>@<your pi's IP address>'
 * You can successfully login to <user>@<your pi's IP address> using passwordless (key-based) authentication with no errors.
