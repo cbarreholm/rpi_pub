@@ -140,7 +140,7 @@ chown root:root $SUDOERSDFILE
 * View the output file called "inventory.txt" in rpi_pub folder
 
 #### Use the IP that was discovered for your pi as inventory
-* edit the rpi_pub/ansible/inventory file to include the IP that was discovered in the [rpi_server] group
+* edit the rpi_pub/ansible/inventory.yaml file to include the IP that was discovered in the [rpi_server] group. Alternatively add in /etc/hosts
 
 #### Edit the rpi_pub/ansible/prepPi.yml file to play with roles and tags, but this is optional and advanced
 
