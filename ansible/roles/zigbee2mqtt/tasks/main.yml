@@ -1,0 +1,91 @@
+---
+# tasks file zigbee2mqtt
+
+- name: Install Packages needed for zigbee2mqtt
+  become: yes
+  apt: 
+    install_recommends: yes
+    update_cache: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - nodejs 
+      - npm
+      - git
+  tags: zigbee2mqtt
+
+- name: Create directory for source files
+  become: yes
+  file: 
+    path: /opt/zigbee2mqtt
+    state: directory
+    owner: "{{ host_alt_user }}"
+    group: "{{ host_alt_user }}"
+  tags: zigbee2mqtt
+
+# There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
+- name: Disable firewall
+  become: yes
+  ufw:
+    state: disabled
+  tags: zigbee2mqtt
+
+- name: Download source files from github
+  git:
+      repo: https://github.com/Koenkk/zigbee2mqtt.git 
+      dest: /opt/zigbee2mqtt
+      depth: 1
+      update: false
+      version: HEAD
+  tags: zigbee2mqtt,zigbee2mqtt.install
+
+- name: Install dependencies
+  command: npm ci
+  args:
+      chdir: /opt/zigbee2mqtt
+  tags: zigbee2mqtt,zigbee2mqtt.install
+
+- name: Build
+  command: npm run build
+  args:
+      chdir: /opt/zigbee2mqtt
+  tags: zigbee2mqtt,zigbee2mqtt.install
+
+- name: Setup configuration.yaml
+  become: yes
+  template: 
+    src: zigbee2mqtt/configuration.yaml.j2
+    dest: /opt/zigbee2mqtt/data/configuration.yaml
+    backup: yes
+  changed_when: false
+  tags: zigbee2mqtt,zigbee2mqtt.configuration
+
+- name: Setup systemd service
+  become: yes
+  template: 
+    src: zigbee2mqtt/zigbee2mqtt.service.j2
+    dest: /etc/systemd/system/zigbee2mqtt.service
+  tags: zigbee2mqtt,zigbee2mqtt.service
+
+- name: Reload service
+  become: yes
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: zigbee2mqtt
+  tags: zigbee2mqtt,zigbee2mqtt.service
+
+- name: Enable service 
+  become: yes
+  ansible.builtin.systemd:
+    enabled: yes
+    name: zigbee2mqtt
+  tags: zigbee2mqtt,zigbee2mqtt.service
+
+
+- name: Enable firewall
+  become: yes
+  ufw:
+    state: enabled
+  tags: zigbee2mqtt
