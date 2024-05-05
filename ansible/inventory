@@ -1,2 +1,10 @@
 [pi_server]
-192.168.0.100 ansible_user=altuser ansible_port=22
+#10.10.10.86 "ansible_user={{ host_alt_user }}" ansible_port=22 dns_ip=10.10.10.1
+10.10.10.235 "ansible_user={{ host_alt_user }}" ansible_port=22 dns_ip=10.10.10.225
+#127.0.0.1 "ansible_user={{ host_alt_user }}" ansible_port=2022
+
+[http_reverse_proxy_server]
+10.10.10.235 "ansible_user={{ host_alt_user }}" ansible_port=22
+
+[mi_flora_server]
+#10.10.10.86 "ansible_user={{ host_alt_user }}" ansible_port=22

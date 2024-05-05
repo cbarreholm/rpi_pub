@@ -1,0 +1,69 @@
+all:
+  hosts:
+  children:
+    pi_server:
+      hosts:
+        miflora:
+          config_system_hostname: "{{host_miflora_config_system_hostname}}"
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+          firewall_outbound_dns_ips: # Check with: resolvconf -l
+            - "{{subnet_primary_slash24}}.1"
+          firewall_inbound_http_port: "80"
+          firewall_inbound_https_port: "443"
+          firewall_outbound_upstream_ip: "{{host_mqtt_ip}}"
+          firewall_outbound_upstream_port: "{{host_mqtt_port}}"
+          requires_bluetooth: true
+        reverseproxy: 
+          config_system_hostname: "{{host_reverseproxy_config_system_hostname}}"
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+          firewall_outbound_dns_ips: # Check with: resolvconf -l
+            - "{{subnet_primary_slash24}}.1"
+          firewall_inbound_http_port: "80"
+          firewall_inbound_https_port: "443"
+          firewall_outbound_upstream_ip: "{{host_home_assistant_ip}}"
+          firewall_outbound_upstream_port: "8123"
+          requires_bluetooth: false
+        zigbee2mqtt: 
+          config_system_hostname: "{{host_zigbee2mqtt_config_system_hostname}}"
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+          firewall_inbound_http_port: "8080"
+          firewall_inbound_https_port: ""
+          firewall_inbound_mqtt_port: "1883"
+          firewall_outbound_dns_ips: 
+            - "{{subnet_primary_slash24}}.225"
+            - "{{subnet_secondary_slash24}}.1"
+          firewall_outbound_upstream_ip: "{{mosquitto_mqtt_bridge_ip}}"
+          firewall_outbound_upstream_port: "{{mosquitto_mqtt_bridge_port}}"
+          
+    mi_flora_server:
+      hosts:
+        miflora: 
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+
+    http_reverse_proxy_server:
+      hosts:
+        reverseproxy: 
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+          nginx_site: "homeassistant.conf"
+          nginx_clientca_crt: "clientCA.crt"
+          nginx_certbot_domains: "{{http_reverse_proxy_server_nginx_certbot_domains}}"
+          nginx_server_name: "http_reverse_proxy_server_nginx_server_name"
+          nginx_upstream_ip: "{{host_home_assistant_ip}}"
+          nginx_upstream_port: "8123"
+
+    zigbee2mqtt_server:
+      hosts:
+        zigbee2mqtt: 
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
+
+    mosquitto_server:
+      hosts:
+        zigbee2mqtt: 
+          ansible_user: "{{ host_alt_user }}" 
+          ansible_port: 22
