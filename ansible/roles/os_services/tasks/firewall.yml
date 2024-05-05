@@ -36,26 +36,38 @@
   become: true
   ufw:
     rule: allow 
-    to_port: http
+    to_port: "{{ firewall_inbound_http_port }}"
     proto: tcp
+  when: firewall_inbound_http_port | length > 0
   tags: firewall
 
 - name: Allow HTTPS
   become: true
   ufw:
     rule: allow 
-    to_port: https
+    to_port: "{{ firewall_inbound_https_port }}"
     proto: tcp
+  when: firewall_inbound_https_port | length > 0
   tags: firewall
+
+- name: Allow MQTT
+  become: true
+  ufw:
+    rule: allow 
+    to_port: "{{ firewall_inbound_mqtt_port }}"
+    proto: tcp
+  when: firewall_inbound_mqtt_port | length > 0
+  tags: firewall,firewall.mqtt
 
 - name: Allow DNS connections to DNS server
   become: true
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ dns_ip }}" 
+    to_ip: "{{ item }}" 
     to_port: "53"
     proto: udp
+  loop: "{{ firewall_outbound_dns_ips }}"  
   tags: firewall
 
 - name: Allow apt updates to connect to specific IPs
@@ -98,10 +110,11 @@
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{firewall_upstream_ip}}"
-    to_port: "{{firewall_upstream_port}}"
+    to_ip: "{{firewall_outbound_upstream_ip}}"
+    to_port: "{{firewall_outbound_upstream_port}}"
     proto: tcp
-  tags: firewall
+  when: firewall_outbound_upstream_ip | length > 0 and firewall_outbound_upstream_ip != "127.0.0.1"
+  tags: firewall,firewall.outbound
 
 - name: Enable firewall
   become: true
