@@ -1,4 +1,5 @@
 .DS_Store
+rpi_pub.code-workspace
 inventory.txt
 ansible/credentials
 ansible/secrets
