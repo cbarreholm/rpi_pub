@@ -1,7 +1,7 @@
 ---
 # tasks file for os_base_packages
 
-- name: Install OS Base Packages
+- name: Install OS Base Packages  Debian 10
   become: yes
   apt: 
     install_recommends: yes
@@ -29,4 +29,35 @@
       - git
       - ttf-mscorefonts-installer
       - iotop
+  when: ansible_distribution_major_version == "10"
   tags: basepackages
+
+- name: Install OS Base Packages Debian 12
+  become: yes
+  apt: 
+    install_recommends: yes
+    update_cache: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      ### The following may have been a legacy from Buster, since they are not found in Bullseye based Raspbian 
+      - aptitude
+      - dkms
+      - xkbset
+      - dnsutils
+      - screen
+      - python3-apt
+      - raspberrypi-kernel-headers
+      - debian-archive-keyring
+      - locales-all
+      - rsync
+      - wget
+      - curl
+      - vim
+      - git
+      - ttf-mscorefonts-installer
+      - iotop
+  when: ansible_distribution_major_version == "12"
+  tags: basepackages
+

@@ -1,0 +1,5 @@
+---
+# vars file for os
+
+config_apt_mirror_url: 'http://archive.raspbian.org/raspbian/'
+config_apt_security_mirror_url: 'http://archive.raspbian.org/raspbian/'
