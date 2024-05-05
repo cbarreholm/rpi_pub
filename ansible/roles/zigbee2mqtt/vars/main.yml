@@ -1,0 +1,8 @@
+---
+# vars file for mqtt bridge
+
+zigbee2mqtt_mqtt_host: localhost
+zigbee2mqtt_mqtt_base_topic: zigbee2mqtt
+zigbee2mqtt_mqtt_username: zigbee2mqtt
+# zigbee2mqtt_mqtt_password: <secret that should be kept secret>
+

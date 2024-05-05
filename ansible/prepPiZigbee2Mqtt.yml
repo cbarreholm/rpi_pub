@@ -1,0 +1,6 @@
+---
+
+- hosts: zigbee2mqtt_server
+  gather_facts: True
+  roles:
+    - { role: zigbee2mqtt, tags: zigbee2mqtt }
