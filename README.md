@@ -147,7 +147,7 @@ chown root:root $SUDOERSDFILE
 ## Usage
 > cd rpi_pub/ansible   
 
-> ansible-playbook -i inventory prepPi.yml   
+> ansible-playbook -i inventory.yaml prepPi.yml   
 
 * Include -vv at the end to see more output
 * Include --tags "ssh" as an example to see it just do the SSH configurations
