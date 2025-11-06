@@ -1,5 +1,8 @@
 .DS_Store
 rpi_pub.code-workspace
 inventory.txt
+ansible/inventory
+ansible/inventory.yaml
 ansible/credentials
 ansible/secrets
+ansible/roles/http_reverse_proxy/files/nginx/clientCA.crt
