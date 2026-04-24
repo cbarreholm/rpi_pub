@@ -4,12 +4,9 @@
 
 The workflow is to work through each task one at a time with a clear context for focus. Review the proposed actions, decide whether to execute them manually or by agent, then verify the issue is resolved.
 
-
 Run syntax check as a final verification before finishing.
 
-Mark the task done in this file when verification is done to track progress. Then remind me to clear the context before proceeding with next task.
-
-Sample prompt to trigger the workflow:
+Mark the task done in this file when verification is done to track progress. Then remind me to clear the context before proceeding with next task. Suggest the following sample prompt to trigger the workflow:
 > Read plans/lint-plan.md and follow the workflow described to address the findings.
 
 ## Tasks
