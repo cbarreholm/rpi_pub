@@ -145,12 +145,13 @@ chown root:root $SUDOERSDFILE
 #### Edit the rpi_pub/ansible/prepPi.yml file to play with roles and tags, but this is optional and advanced
 
 ## Usage
-> cd rpi_pub/ansible   
+> cd rpi_pub/ansible
 
-> ansible-playbook -i inventory.yaml prepPi.yml   
+> ansible-playbook -i inventory.yaml -e @secrets/secrets_file.enc --vault-password-file secrets/vault_password_file prepPi.yml
 
-* Include -vv at the end to see more output
-* Include --tags "ssh" as an example to see it just do the SSH configurations
+* Include `-vv` at the end to see more output
+* Include `--tags "ssh"` as an example to see it just do the SSH configurations
+* Playbooks that use secrets (passwords, network keys, MACs) require the `-e @secrets/secrets_file.enc --vault-password-file` flags — omitting them will result in undefined variables
 
 ## References and Sources
 * Jeff Geerling - https://www.jeffgeerling.com/

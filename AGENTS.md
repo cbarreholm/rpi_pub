@@ -1,8 +1,8 @@
 
 ## Commands
-- Syntax check: `ansible-playbook --syntax-check -i ansible/inventory.yaml ansible/<playbook>.yml`
-- Dry run: `ansible-playbook --check -i ansible/inventory.yaml ansible/<playbook>.yml`
-- Run playbook: `ansible-playbook -i ansible/inventory.yaml ansible/<playbook>.yml`
+- Syntax check: `ansible-playbook --syntax-check -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/<playbook>.yml`
+- Dry run: `ansible-playbook --check -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/<playbook>.yml`
+- Run playbook: `ansible-playbook -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/<playbook>.yml`
 - Lint: `ansible-lint ansible/<playbook>.yml`
 - Validate inventory: `ansible-inventory -i ansible/inventory.yaml --list`
 - Encrypt secret: `ansible-vault encrypt_string --vault-password-file ansible/secrets/vault_password_file`
