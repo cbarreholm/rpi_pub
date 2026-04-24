@@ -1,5 +1,6 @@
 .DS_Store
-plans/security-review.md
+plans/security-review*.md
+specs/security-review*.md
 rpi_pub.code-workspace
 inventory.txt
 ansible/inventory
