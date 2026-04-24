@@ -59,15 +59,26 @@
   when: firewall_inbound_mqtt_port | length > 0
   tags: firewall,firewall.mqtt
 
-- name: Allow DNS connections to DNS server
+- name: Allow DNS connections to DNS server (UDP)
   become: true
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ item }}" 
+    to_ip: "{{ item }}"
     to_port: "53"
     proto: udp
-  loop: "{{ firewall_outbound_dns_ips }}"  
+  loop: "{{ firewall_outbound_dns_ips }}"
+  tags: firewall
+
+- name: Allow DNS connections to DNS server (TCP)
+  become: true
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ item }}"
+    to_port: "53"
+    proto: tcp
+  loop: "{{ firewall_outbound_dns_ips }}"
   tags: firewall
 
 - name: Allow apt updates to connect to specific IPs
