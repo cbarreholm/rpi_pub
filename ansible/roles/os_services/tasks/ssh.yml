@@ -122,6 +122,51 @@
     validate: '/usr/sbin/sshd -T -f %s'
   tags: ssh
 
+- name: Configure SSH Service (Ciphers)
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?Ciphers(.*)'
+    line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com'
+    validate: '/usr/sbin/sshd -T -f %s'
+  tags: ssh
+
+- name: Configure SSH Service (MACs)
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?MACs(.*)'
+    line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com'
+    validate: '/usr/sbin/sshd -T -f %s'
+  tags: ssh
+
+- name: Configure SSH Service (KexAlgorithms)
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?KexAlgorithms(.*)'
+    line: 'KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256'
+    validate: '/usr/sbin/sshd -T -f %s'
+  tags: ssh
+
+- name: Configure SSH Service (LoginGraceTime 30)
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?LoginGraceTime(.*)'
+    line: 'LoginGraceTime 30'
+    validate: '/usr/sbin/sshd -T -f %s'
+  tags: ssh
+
+- name: Configure SSH Service (PermitEmptyPasswords no)
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PermitEmptyPasswords(.*)'
+    line: 'PermitEmptyPasswords no'
+    validate: '/usr/sbin/sshd -T -f %s'
+  tags: ssh
+
 - name: Configure SSH Service (PermitRootLogin no)
   become: yes
   lineinfile: 
