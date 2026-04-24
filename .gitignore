@@ -8,3 +8,11 @@ ansible/inventory.yaml
 ansible/credentials
 ansible/secrets
 ansible/roles/http_reverse_proxy/files/nginx/clientCA.crt
+
+# Broad safety patterns for sensitive file types
+*.enc
+vault_password_file
+password.txt
+*.key
+*.pem
+*.p12
