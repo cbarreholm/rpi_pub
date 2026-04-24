@@ -112,12 +112,13 @@
     validate: '/usr/sbin/sshd -T -f %s'
   tags: ssh
 
-- name: Configure SSH Service (LogLevel ERROR)
+# VERBOSE ensures SSH auth failures are visible to fail2ban's sshd jail
+- name: Configure SSH Service (LogLevel VERBOSE)
   become: yes
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
-    regexp: '^#LogLevel(.*)'
-    line: 'LogLevel ERROR'
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?LogLevel(.*)'
+    line: 'LogLevel VERBOSE'
     validate: '/usr/sbin/sshd -T -f %s'
   tags: ssh
 
