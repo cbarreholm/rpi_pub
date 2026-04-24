@@ -96,7 +96,7 @@ I'll list some features of this repository and ansible setup. This can also be k
 * Firewall
    * Local firewall
 * nginx
-   * Light weight web server including Let's Encrypt certificates
+   * HTTPS reverse proxy with Let's Encrypt certificates and mutual TLS (client certificate) authentication
 * fail2ban
    * Network security tool that scans log files and bans IP addresses
 * RSYSLOG
@@ -161,6 +161,47 @@ chown root:root $SUDOERSDFILE
     * https://lwn.net/Articles/720675/
 * Extending the life of your Raspberry PI SD Card - https://domoticproject.com/extending-life-raspberry-pi-sd-card/
 * Raspberry Pi Hardening Guide - https://chrisapproved.com/blog/raspberry-pi-hardening.html
+
+# HTTP Reverse Proxy (prepPiHttpReverseProxy.yml)
+
+Sets up nginx as an HTTPS reverse proxy with Let's Encrypt TLS and mutual TLS (client certificate) authentication.
+
+## Two-phase deployment
+
+Because the Let's Encrypt certificate must exist before an HTTPS server block can be configured, the playbook uses a two-phase approach:
+
+### Phase 1 — Bootstrap (first run, no certificate yet)
+
+1. Deploys an HTTP-only nginx config so certbot can complete the ACME HTTP-01 challenge.
+2. Runs `certbot --nginx` to issue the certificate and reconfigure nginx.
+3. If `nginx_site_https` template already exists, renders it to a temp file and diffs it against certbot's config so you can verify they match.
+4. **Does not deploy the HTTPS template** — review certbot's resulting config at `/etc/nginx/sites-available/<nginx_site>` on the host and use it to build your `nginx_site_https` template.
+
+### Phase 2 — Normal deploy (certificate exists)
+
+1. Skips HTTP config and certbot entirely.
+2. Deploys the HTTPS template (`nginx_site_https`) directly.
+3. Certificate renewals are handled automatically by certbot's own systemd timer — independent of Ansible.
+
+### Preview changes before applying
+
+```bash
+ansible-playbook --diff --check -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/prepPiHttpReverseProxy.yml
+```
+
+## Required inventory variables
+
+| Variable | Description | Example |
+|---|---|---|
+| `nginx_site` | HTTP-only bootstrap template filename | `sample-reverse-proxy-bootstrap.conf` |
+| `nginx_site_https` | HTTPS template filename | `sample-reverse-proxy-https.conf` |
+| `nginx_server_name` | Space-separated list of server names | `app.example.com altname.example.com` |
+| `nginx_upstream_ip` | IP of the upstream service | `192.168.1.2` |
+| `nginx_upstream_port` | Port of the upstream service | `8080` |
+| `nginx_clientca_crt` | Client CA certificate filename (in files/nginx/) | `clientCA.crt` |
+| `nginx_certbot_email` | Email for Let's Encrypt notifications | `admin@example.com` |
+| `nginx_certbot_domains` | Comma-separated domains for the certificate | `app.example.com,altname.example.com` |
+| `nginx_certbot_primary_domain` | First domain in `nginx_certbot_domains`; used as certbot's cert directory name | `app.example.com` |
 
 # Acknowledgement
 This repo is a fork of https://github.com/raajivrekha/rpi_pub created by Raajiv Rekha

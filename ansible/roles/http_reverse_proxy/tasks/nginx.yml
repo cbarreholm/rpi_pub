@@ -3,14 +3,14 @@
 
 - name: Install nginx package  (if not present)
   become: true
-  apt: 
+  apt:
     install_recommends: yes
     name: "{{ packages }}"
     state: present
   vars:
     packages:
       - nginx
-      - certbot 
+      - certbot
       - python3-certbot-nginx
   tags: nginx
 
@@ -19,15 +19,15 @@
   copy:
     src: "{{ config_nginx_site_src_dir }}nginx.conf"
     dest: /etc/nginx/nginx.conf
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: '0644'
   notify: Restart nginx
   tags: nginx
 
 - name: Remove default site
   become: true
-  file: 
+  file:
     dest: /etc/nginx/sites-enabled/default
     state: absent
   notify: Restart nginx
@@ -35,32 +35,44 @@
 
 - name: Create directory for client certificate
   become: true
-  file: 
+  file:
     path: /etc/nginx/certificates/
     state: directory
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: '0644'
   tags: nginx
 
-- name: Copy {{ nginx_clientca_crt }} 
+- name: Copy {{ nginx_clientca_crt }}
   become: true
   copy:
     src: "{{ config_nginx_site_src_dir }}{{ nginx_clientca_crt }}"
     dest: /etc/nginx/certificates/clientCA.crt
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: '0644'
   tags: nginx
 
-- name: Template {{ nginx_site }} to sites-available
+# Check whether a Let's Encrypt certificate has already been issued.
+# This controls whether we are in bootstrap mode (first run) or normal mode.
+- name: Check if Let's Encrypt certificate exists
+  stat:
+    path: /etc/letsencrypt/live/{{ nginx_certbot_primary_domain }}/fullchain.pem
+  register: cert_stat
+  tags: nginx
+
+# Bootstrap phase: deploy HTTP-only config so certbot can complete the
+# ACME HTTP-01 challenge over port 80. Only runs when no cert exists yet.
+- name: Deploy HTTP-only config for Let's Encrypt bootstrap
   become: true
   ansible.builtin.template:
     src: "{{ config_nginx_site_src_dir }}{{ nginx_site }}"
-    dest: /etc/nginx/sites-available/
-    owner: root 
-    group: root 
+    dest: /etc/nginx/sites-available/{{ nginx_site }}
+    owner: root
+    group: root
     mode: '0644'
+  when: not cert_stat.stat.exists
+  notify: Restart nginx
   tags: nginx
 
 - name: Enable {{ config_nginx_site }}
@@ -70,12 +82,85 @@
     dest: "/etc/nginx/sites-enabled/{{ nginx_site }}"
     owner: root
     group: root
-    state: link  
+    state: link
   tags: nginx
   notify: Restart nginx
 
-- name: Install Let's Encrypt
+# Flush handlers so nginx is running on port 80 before certbot attempts
+# the ACME HTTP-01 challenge.
+- name: Flush handlers before certbot
+  meta: flush_handlers
+  tags: nginx
+
+# Issue certificate on first run only. Uses --nginx mode so certbot also
+# reconfigures nginx during bootstrap. The HTTPS template is not deployed
+# on this run — review certbot's resulting config and build
+# templates/nginx/{{ nginx_site_https }} from it before the next deploy.
+- name: Issue Let's Encrypt certificate (bootstrap only)
   become: true
   shell:
     cmd: certbot --nginx -n --agree-tos --email {{ nginx_certbot_email }} -d {{ nginx_certbot_domains }}
+  when: not cert_stat.stat.exists
+  tags: nginx
+
+# If the HTTPS template already exists on the controller, render it to a
+# temp file and diff it against certbot's config so you can verify they
+# match before the next deploy.
+- name: Check if HTTPS template exists on controller
+  stat:
+    path: "{{ role_path }}/templates/{{ config_nginx_site_src_dir }}{{ nginx_site_https }}"
+  delegate_to: localhost
+  become: false
+  register: https_template_stat
+  when: not cert_stat.stat.exists
+  tags: nginx
+
+- name: Render HTTPS template to temp file for diff preview
+  become: true
+  ansible.builtin.template:
+    src: "{{ config_nginx_site_src_dir }}{{ nginx_site_https }}"
+    dest: /tmp/{{ nginx_site_https }}.preview
+    owner: root
+    group: root
+    mode: '0600'
+  when: not cert_stat.stat.exists and https_template_stat.stat is defined and https_template_stat.stat.exists
+  tags: nginx
+
+- name: Diff HTTPS template against certbot config
+  become: true
+  command: diff /tmp/{{ nginx_site_https }}.preview /etc/nginx/sites-available/{{ nginx_site }}
+  register: certbot_diff
+  failed_when: certbot_diff.rc > 1
+  changed_when: false
+  when: not cert_stat.stat.exists and https_template_stat.stat is defined and https_template_stat.stat.exists
+  tags: nginx
+
+- name: Show diff between HTTPS template and certbot config
+  debug:
+    msg: "{{ certbot_diff.stdout_lines }}"
+  when: not cert_stat.stat.exists and certbot_diff is defined and certbot_diff.stdout_lines is defined
+  tags: nginx
+
+- name: Remove temp HTTPS preview file
+  become: true
+  file:
+    path: /tmp/{{ nginx_site_https }}.preview
+    state: absent
+  when: not cert_stat.stat.exists and https_template_stat.stat is defined and https_template_stat.stat.exists
+  tags: nginx
+
+# Deploy the HTTPS template on all runs after bootstrap. This ensures the
+# config is always in the expected version-controlled state.
+# Preview changes before applying with:
+#   ansible-playbook --diff --check -i inventory.yaml ... prepPiHttpReverseProxy.yml
+- name: Deploy HTTPS config
+  become: true
+  ansible.builtin.template:
+    src: "{{ config_nginx_site_src_dir }}{{ nginx_site_https }}"
+    dest: /etc/nginx/sites-available/{{ nginx_site }}
+    owner: root
+    group: root
+    mode: '0644'
+  when: cert_stat.stat.exists
+  notify: Restart nginx
   tags: nginx
