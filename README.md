@@ -151,12 +151,12 @@ Ansible generates a random password for the `pi` user and automatically deletes 
 #### Use the IP that was discovered for your pi as inventory
 * edit the rpi_pub/ansible/inventory.yaml file to include the IP that was discovered in the [rpi_server] group. Alternatively add in /etc/hosts
 
-#### Edit the rpi_pub/ansible/prepPi.yml file to play with roles and tags, but this is optional and advanced
+#### Edit the rpi_pub/ansible/prepPiServer.yml file to play with roles and tags, but this is optional and advanced
 
 ## Usage
 > cd rpi_pub/ansible
 
-> ansible-playbook -i inventory.yaml -e @secrets/secrets_file.enc --vault-password-file secrets/vault_password_file prepPi.yml
+> ansible-playbook -i inventory.yaml -e @secrets/secrets_file.enc --vault-password-file secrets/vault_password_file prepPiServer.yml
 
 * Include `-vv` at the end to see more output
 * Include `--tags "ssh"` as an example to see it just do the SSH configurations
@@ -171,7 +171,7 @@ Ansible generates a random password for the `pi` user and automatically deletes 
 * Extending the life of your Raspberry PI SD Card - https://domoticproject.com/extending-life-raspberry-pi-sd-card/
 * Raspberry Pi Hardening Guide - https://chrisapproved.com/blog/raspberry-pi-hardening.html
 
-# HTTP Reverse Proxy (prepPiHttpReverseProxy.yml)
+# HTTP Reverse Proxy (prepHttpReverseProxy.yml)
 
 Sets up nginx as an HTTPS reverse proxy with Let's Encrypt TLS and mutual TLS (client certificate) authentication.
 
@@ -195,7 +195,7 @@ Because the Let's Encrypt certificate must exist before an HTTPS server block ca
 ### Preview changes before applying
 
 ```bash
-ansible-playbook --diff --check -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/prepPiHttpReverseProxy.yml
+ansible-playbook --diff --check -i ansible/inventory.yaml -e @ansible/secrets/secrets_file.enc --vault-password-file ansible/secrets/vault_password_file ansible/prepHttpReverseProxy.yml
 ```
 
 ## Required inventory variables
