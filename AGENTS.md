@@ -23,3 +23,17 @@ Available playbooks: `prepPi.yml`, `prepPiMosquitto.yml`, `prepPiZigbee2Mqtt.yml
  - README.md is a living artifact — update it whenever requirements or design decisions change.
  - Always verify .gitignore covers any sensitive files before committing.
  - Run tasks in plans sequentially, tracking progress in task table in the applicable plan file. Instructing user to clear context inbetween tasks for focus. 
+
+
+## Workflow definitions
+
+### Implementation Workflow (per session)
+Alias used in prompt: "Implement now"
+1. Read specs/project.md → plans/implementation-plan.md → pick next task → read its spec
+2. Read memory/learnings.md if it exists
+3. Write tests first, then implement, then verify
+4. Lint
+5. Mark task done in plans/implementation-plan.md
+6. Update memory/learnings.md with anything future tasks need
+7. Suggest commit message and as user to commit
+8. Stop after one task
