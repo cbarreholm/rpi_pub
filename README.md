@@ -8,6 +8,8 @@ See the Features section below and give it a go.
 # Why?
 I wanted to learn ansible and enjoy running pihole on two Pi Zero W's. I also test on a RPI3B+. I also wanted to harden and tweak the raspbian OS to achieve a greater level of security. Lynis is the benchmark tool which evaluated my test systems. This ansible playbook will achieve a score just above 80 (Which is pretty good). This is a healthy level that allows for continued expansion and varied use cases which doesn't sacrifice too much security.
 
+A second explicit goal is **extending the life of the SD card**. SD cards have limited write endurance and are the most common point of failure on a Raspberry Pi. Several design decisions in this project directly target reducing unnecessary writes: `noatime` mount options, delayed write commits, keeping transient data in `/tmp`, directing apt cache to `/tmp`, and using the Kyber I/O scheduler which is optimised for flash storage.
+
 # Features
 I'll list some features of this repository and ansible setup. This can also be known as "What does this playbook do for me?". 
 
@@ -25,15 +27,15 @@ I'll list some features of this repository and ansible setup. This can also be k
     * Allow apt to run non-interactively
         * Use --force-confdef
         * Use --force-confold
-    * Setup apt cache directory (/tmp/apt)
+    * Setup apt cache directory (/tmp/apt) — keeps apt cache off the SD card (SD card longevity)
     * Setup apt cache archive (/var/cache/apt/arhive)
 * Setup System fstab file
     * Ensure Security Settings on Mountpoints and Commit (Write) time of 30 Minutes on root partition
     * Uses 'findmnt' to automatically find PARTUUID for /boot and /
     * Mounts the following mountpoints with their own settings
-        * /boot - defaults,noatime
-        * / - defaults,noatime,commit=1800
-        * /tmp - rw,bind,noatime,nodev,nosuid,noexec
+        * /boot - defaults,noatime (SD card longevity: suppresses access-time writes)
+        * / - defaults,noatime,commit=1800 (SD card longevity: flushes writes at most every 30 min)
+        * /tmp - rw,bind,noatime,nodev,nosuid,noexec (SD card longevity: transient data stays off persistent storage)
         * /opt - rw,bind,noatime,nodev,nosuid
         * /home - rw,bind,noatime,nodev
         * /var - rw,bind,noatime,nodev,nosuid
@@ -86,7 +88,7 @@ I'll list some features of this repository and ansible setup. This can also be k
    * IPV4 Networking Items
    * IPV6 Networking Items 
 * Ensure Disable of Wi-Fi PowerSave at Startup for Persistence
-* Kernel Scheduler change from deadline to kyber and with Persistence
+* Kernel Scheduler change from deadline to kyber and with Persistence (SD card longevity: Kyber is optimised for flash/NVMe storage)
 
 ## OS Services Setups
 * Auto Update
