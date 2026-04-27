@@ -21,4 +21,4 @@ Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Sect
 | [x] 14 | Gate RPi-specific kernel tasks by platform | [task-14-gate-kernel-rpi-tasks.md](../specs/task-14-gate-kernel-rpi-tasks.md) | §2.3 REQ-KRN-07, REQ-KRN-08 |
 | [x] 15 | Implement per-host user management | [task-15-per-host-user-management.md](../specs/task-15-per-host-user-management.md) | §2.2 REQ-USR-01, REQ-USR-02 |
 | [ ] 16 | Implement secondary disk management | [task-16-secondary-disk.md](../specs/task-16-secondary-disk.md) | §2.6 REQ-DSK-01 – REQ-DSK-05 |
-| [ ] 17 | Document playbook applicability in README | [task-17-playbook-applicability.md](../specs/task-17-playbook-applicability.md) | §2.8 REQ-PLY-07 – REQ-PLY-10 |
+| [x] 17 | Document playbook applicability in README | [task-17-playbook-applicability.md](../specs/task-17-playbook-applicability.md) | §2.8 REQ-PLY-07 – REQ-PLY-10 |

@@ -104,6 +104,17 @@ I'll list some features of this repository and ansible setup. This can also be k
 * RSYSLOG
    * Enable High Precision Timestamping
 
+# Playbooks
+
+| Playbook | Target group | Hardware requirement |
+|---|---|---|
+| `prepPiServer.yml` | `pi_server` | Raspberry Pi |
+| `prepGenericHwServer.yml` | `generic_server` | Any Debian x86/ARM |
+| `prepMosquitto.yml` | any | None |
+| `prepHttpReverseProxy.yml` | any | None |
+| `prepZigbee2Mqtt.yml` | any | Zigbee USB adapter |
+| `prepMiFloraServer.yml` | any | Bluetooth hardware |
+
 # Pre-requirements and Assumptions
 * Your have burned latest (buster or even bookworm) raspbian (preferably 64 bit) image to SD card
 * You have done 'touch /boot/ssh" to enable headless ssh login

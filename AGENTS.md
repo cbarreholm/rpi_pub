@@ -7,7 +7,7 @@
 - Validate inventory: `ansible-inventory -i ansible/inventory.yaml --list`
 - Encrypt secret: `ansible-vault encrypt_string --vault-password-file ansible/secrets/vault_password_file`
 
-Available playbooks: `prepPiServer.yml`, `prepMosquitto.yml`, `prepZigbee2Mqtt.yml`, `prepHttpReverseProxy.yml`, `prepMiFloraServer.yml`
+Available playbooks: `prepPiServer.yml`, `prepGenericHwServer.yml`, `prepMosquitto.yml`, `prepZigbee2Mqtt.yml`, `prepHttpReverseProxy.yml`, `prepMiFloraServer.yml`
 
 ## Project Structure
 - `specs/` – requirements (`requirements.md`) and project overview (`project.md`)
