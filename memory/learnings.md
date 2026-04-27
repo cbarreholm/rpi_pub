@@ -9,5 +9,6 @@
 
 ## Verified Tasks
 - Task 01–08: All functional requirements pass. Verification tasks do not require test files — just read the role and compare against spec requirements.
+- Task 11: Added `when: inventory_hostname in groups['pi_server']` to 7 RPi-specific tasks in `os_base/tasks/main.yml`. The two `findmnt` tasks already had a `when` for version check — combined as a YAML list. Test written as `tests/test_platform_gates.py` using `unittest` + `pyyaml` (pytest not installed).
 - Task 05 note: REQ-USR-01 is fulfilled by two separate `user` tasks (one sets password, another sets lock/shell/expires) — functionally correct, not a gap.
 - Task 06 note: Some ssh.yml regexp patterns only match commented lines (e.g. `'^#PasswordAuthentication(.*)'`). This is pre-existing behavior; not a gap since Debian defaults keep these lines commented.

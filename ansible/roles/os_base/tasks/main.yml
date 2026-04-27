@@ -96,6 +96,7 @@
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(?!-security)) (.*) (.*) (.*) (.*)$'
     replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
+  when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
 
@@ -105,6 +106,7 @@
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(-security)) (.*) (.*) (.*) (.*)$'
     replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
+  when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
 
@@ -113,7 +115,9 @@
   command: "findmnt -no PARTUUID /boot"
   register: var_part_boot
   changed_when: false
-  when: ansible_distribution_major_version == "10"
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version == "10"
   tags: fstabsetup
 
 - name: obtain system PARTUUID for /boot/firmware
@@ -121,7 +125,9 @@
   command: "findmnt -no PARTUUID /boot/firmware"
   register: var_part_boot_firmware
   changed_when: false
-  when: ansible_distribution_major_version == "12"
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version == "12"
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /
@@ -138,6 +144,7 @@
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.fstab.j2"
     - "{{ ansible_distribution }}.fstab.j2"
   changed_when: false
+  when: inventory_hostname in groups['pi_server']
   tags: fstabsetup
 
 - name: Set Swap File Size (256M)
@@ -146,6 +153,7 @@
     dest: /etc/dphys-swapfile
     regexp: "^CONF_SWAPSIZE=(.*)"
     line: "CONF_SWAPSIZE=256"
+  when: inventory_hostname in groups['pi_server']
   tags: swapsize
 
 - name: Set hostname '{{config_system_hostname}}'
@@ -160,5 +168,6 @@
     dest: /etc/hosts
     regexp: "^(127.0.1.1)(\\s)*(raspberrypi)$"
     replace: '\1\2{{config_system_hostname}}'
+  when: inventory_hostname in groups['pi_server']
   tags: hostname
 
