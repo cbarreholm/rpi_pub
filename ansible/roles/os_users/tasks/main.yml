@@ -2,34 +2,34 @@
 # tasks file for OS users
 
 
-- name: "Not allowed to run as 'pi' user. Create alternative user first."
+- name: "Not allowed to run as '{{ platform_default_user }}' user. Create alternative user first."
   fail:
-    msg: "Playbook must not be run as the 'pi' user. Create an alternative sudo user first and re-run as that user."
-  when: ansible_user_id == 'pi'
+    msg: "Playbook must not be run as the '{{ platform_default_user }}' user. Create an alternative sudo user first and re-run as that user."
+  when: ansible_user_id == platform_default_user
   tags: users
 
 
-- name: Update `pi` with auto generated password
+- name: Update `{{ platform_default_user }}` with auto generated password
   become: yes
   user:
-    name: pi
-    password: "{{ lookup('password', 'credentials/pi/password.txt encrypt=sha512_crypt') }}"
-  when: ansible_user_id != 'pi'
+    name: "{{ platform_default_user }}"
+    password: "{{ lookup('password', 'credentials/' + platform_default_user + '/password.txt encrypt=sha512_crypt') }}"
+  when: ansible_user_id != platform_default_user
   tags: users
 
-- name: Remove generated pi password file from controller
-  local_action: file path="credentials/pi/password.txt" state=absent
-  when: ansible_user_id != 'pi'
+- name: Remove generated {{ platform_default_user }} password file from controller
+  local_action: file path="credentials/{{ platform_default_user }}/password.txt" state=absent
+  when: ansible_user_id != platform_default_user
   tags: users
 
-- name: "Disable 'pi' user"
+- name: "Disable '{{ platform_default_user }}' user"
   become: yes
   user:
-    name: pi
+    name: "{{ platform_default_user }}"
     shell: /sbin/nologin
     password_lock: true
     expires: 1.0
-  when: ansible_user_id != 'pi'
+  when: ansible_user_id != platform_default_user
   tags: users
 
 
@@ -37,7 +37,7 @@
   become: yes
   group:
     name: ssh-users
-  when: ansible_user_id != 'pi'
+  when: ansible_user_id != platform_default_user
   tags: ssh
 
 
@@ -47,9 +47,9 @@
 # session requires a stolen private key, not just a password.
 - name: "Adding user '{{ ansible_user_id }}'' to 'ssh-users'"
   become: yes
-  user: 
+  user:
     name: "{{ ansible_user_id }}"
     groups: [ssh-users]
     append: yes
-  when: ansible_user_id != 'pi'
+  when: ansible_user_id != platform_default_user
   tags: ssh
