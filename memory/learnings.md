@@ -5,7 +5,7 @@
 - No `.ansible-lint` config file exists in the repo.
 
 ## Naming Inconsistencies
-- `requires_bluetooth` variable used in `os_kernel/tasks/main.yml` (line 111) vs `has_bluetooth` used in Section 2 requirements. To be resolved in Task 13.
+- Task 13 resolved: renamed `requires_bluetooth` → `has_bluetooth` and added `has_usb`, `has_firewire`, `has_wifi` gates to `os_kernel/tasks/main.yml`. Defaults set to `false` in `os_kernel/defaults/main.yml`. Inventory updated accordingly.
 
 ## Verified Tasks
 - Task 01–08: All functional requirements pass. Verification tasks do not require test files — just read the role and compare against spec requirements.
