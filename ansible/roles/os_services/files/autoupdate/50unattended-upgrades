@@ -87,7 +87,8 @@ Unattended-Upgrade::InstallOnShutdown "false";
 // If empty or unset then no email is sent, make sure that you
 // have a working mail setup on your system. A package that provides
 // 'mailx' must be installed. E.g. "user@example.com"
-Unattended-Upgrade::Mail "your@e-mail-address.com";
+// Disabled: no mail transport agent is configured on these hosts.
+Unattended-Upgrade::Mail "";
 
 // Set this value to "true" to get emails only on errors. Default
 // is to always send a mail if Unattended-Upgrade::Mail is set
@@ -95,10 +96,15 @@ Unattended-Upgrade::MailOnlyOnError "false";
 
 // Remove unused automatically installed kernel-related packages
 // (kernel images, kernel headers and kernel version locked tools).
+// Kept disabled: on Raspberry Pi the kernel is a single unversioned package
+// (raspberrypi-kernel), so there are no old kernel versions to accumulate.
+// The option is kept disabled as a precaution since there is also no GRUB
+// fallback menu — recovery from a bad kernel update requires physical SD card
+// access.
 //Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
 
 // Do automatic removal of newly unused dependencies after the upgrade
-//Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
 
 // Do automatic removal of unused packages after the upgrade
 // (equivalent to apt-get autoremove)
