@@ -6,7 +6,9 @@
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
     - "{{ ansible_distribution }}.yml"
-  tags: vars
+  tags:
+    - always
+    - vars
 
 - name: Set timezone to '{{ config_timezone }}'
   become: true
@@ -38,7 +40,7 @@
 - name: Parse 'LANG' from current locale and language configuration
   become: yes
   set_fact:
-    locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
+    locale_lang: "{{ locale_status.stdout | default('') | regex_search('LANG=([^\n]+)', '\\1') | default([config_system_locale], true) | first }}"
   tags: locale
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
@@ -53,6 +55,12 @@
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
   tags: locale
 
+- name: Check if /etc/default/keyboard exists
+  stat:
+    path: /etc/default/keyboard
+  register: keyboard_file
+  tags: keyboard
+
 - name: Set Keyboard Layout to {{ config_keyboard_layout }}
   become: yes
   lineinfile:
@@ -60,6 +68,7 @@
     regexp: "^XKBLAYOUT="
     line: "XKBLAYOUT=\"{{config_keyboard_layout}}\""
     state: present
+  when: keyboard_file.stat.exists
   tags: keyboard
 
 - name: Fixup APT Configs
