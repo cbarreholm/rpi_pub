@@ -32,8 +32,11 @@ config_firewall_apt_update_ips:
   # deb.debian.org
   - 151.101.86.132
 
-config_firewall_letsencrypt_ips:  
-  # acme-v02.api.letsencrypt.org
+config_firewall_letsencrypt_ips:
+  # acme-v02.api.letsencrypt.org (Cloudflare Anycast — IP can change)
+  # If certbot renewal fails with a connection error, update this IP:
+  #   dig +short acme-v02.api.letsencrypt.org
+  # Then re-run prepPiHttpReverseProxy.yml with the firewall tag.
   - 172.65.32.248
 
 
