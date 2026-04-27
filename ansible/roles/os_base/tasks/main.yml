@@ -180,3 +180,7 @@
   when: inventory_hostname in groups['pi_server']
   tags: hostname
 
+- import_tasks: secondary_disk.yml
+  when: secondary_disk_device is defined and secondary_disk_device != ""
+  tags: secondary_disk
+

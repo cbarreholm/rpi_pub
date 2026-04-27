@@ -8,6 +8,7 @@
 - Task 13 resolved: renamed `requires_bluetooth` → `has_bluetooth` and added `has_usb`, `has_firewire`, `has_wifi` gates to `os_kernel/tasks/main.yml`. Defaults set to `false` in `os_kernel/defaults/main.yml`. Inventory updated accordingly.
 
 ## Verified Tasks
+- Task 16: Added `os_base/tasks/secondary_disk.yml` with stat/fail/blkid/filesystem/mount tasks. Imported in `main.yml` with `when: secondary_disk_device is defined and secondary_disk_device != ""`. Defaults added to `os_base/defaults/main.yml`. All privileged tasks (blkid, filesystem, mount) require `become: true`. Spec-defined register names (`disk_stat`, `disk_fs_type`) conflict with `var-naming[no-role-prefix]` lint rule — left as-is (same as pre-existing violations). Test at `os_base/tests/test_secondary_disk.py`.
 - Task 17: Added `# Playbooks` reference table to README.md (before Pre-requirements section) and added `prepGenericHwServer.yml` to AGENTS.md available playbooks list. Documentation-only task, no tests.
 - Task 15: Introduced `platform_default_user` variable (default `pi`) in `os_users/defaults/main.yml`. All hardcoded `pi` references in `os_users/tasks/main.yml` replaced with `{{ platform_default_user }}`. `generic_server` group in inventory gets `vars: platform_default_user: debian`. Test at `os_users/tests/test_per_host_user_management.py`.
 - Task 01–08: All functional requirements pass. Verification tasks do not require test files — just read the role and compare against spec requirements.

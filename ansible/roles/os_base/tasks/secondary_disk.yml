@@ -1,0 +1,33 @@
+---
+- name: Verify secondary disk device exists
+  ansible.builtin.stat:
+    path: "{{ secondary_disk_device }}"
+  register: disk_stat
+
+- name: Fail if secondary disk device does not exist
+  ansible.builtin.fail:
+    msg: "Secondary disk device {{ secondary_disk_device }} is defined but does not exist on this host."
+  when: not disk_stat.stat.exists
+
+- name: Check for existing filesystem on secondary disk
+  ansible.builtin.command: blkid -s TYPE -o value {{ secondary_disk_device }}
+  register: disk_fs_type
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: Format secondary disk with ext4 if unformatted
+  community.general.filesystem:
+    fstype: ext4
+    dev: "{{ secondary_disk_device }}"
+  become: true
+  when: disk_fs_type.stdout == ""
+
+- name: Mount secondary disk and add fstab entry
+  ansible.posix.mount:
+    path: "{{ secondary_disk_mount_path }}"
+    src: "{{ secondary_disk_device }}"
+    fstype: ext4
+    opts: defaults,noatime
+    state: mounted
+  become: true
