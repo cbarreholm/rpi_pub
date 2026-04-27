@@ -4,7 +4,7 @@
 
 - name: "Not allowed to run as 'pi' user. Create alternative user first."
   fail:
-    msg: pi
+    msg: "Playbook must not be run as the 'pi' user. Create an alternative sudo user first and re-run as that user."
   when: ansible_user_id == 'pi'
   tags: users
 

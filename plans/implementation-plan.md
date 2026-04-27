@@ -5,7 +5,7 @@ Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Sect
 
 | Task | Description | Spec | Requirements |
 |------|-------------|------|--------------|
-| [ ] 01 | Verify pre-conditions | [task-01-verify-preconditions.md](../specs/task-01-verify-preconditions.md) | §1.1 REQ-PRE-01, REQ-PRE-02 |
+| [x] 01 | Verify pre-conditions | [task-01-verify-preconditions.md](../specs/task-01-verify-preconditions.md) | §1.1 REQ-PRE-01, REQ-PRE-02 |
 | [ ] 02 | Verify OS base configuration | [task-02-verify-os-base.md](../specs/task-02-verify-os-base.md) | §1.2 REQ-BASE-01 – REQ-BASE-14 |
 | [ ] 03 | Verify OS base packages | [task-03-verify-os-base-packages.md](../specs/task-03-verify-os-base-packages.md) | §1.3 REQ-PKG-01 |
 | [ ] 04 | Verify kernel hardening | [task-04-verify-kernel.md](../specs/task-04-verify-kernel.md) | §1.4 REQ-KRN-01 – REQ-KRN-08 |
