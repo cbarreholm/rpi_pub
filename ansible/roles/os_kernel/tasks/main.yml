@@ -108,6 +108,7 @@
       blacklist btbcm
       blacklist bnep
       blacklist bluetooth
+  when: not (requires_bluetooth | default(false))
   tags: modprobe
 
 - name: Disable FireWire
