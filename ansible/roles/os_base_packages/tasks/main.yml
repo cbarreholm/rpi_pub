@@ -3,23 +3,18 @@
 
 - name: Install OS Base Packages  Debian 10
   become: yes
-  apt: 
+  apt:
     install_recommends: yes
     update_cache: yes
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      ### The following may have been a legacy from Buster, since they are not found in Bullseye based Raspbian 
       - aptitude
-      - dkms
-      - console-data
-      - xkbset
       - dnsutils
       - screen
       - python3-apt
       - apt-transport-https
-      - raspberrypi-kernel-headers
       - debian-archive-keyring
       - locales-all
       - rsync
@@ -27,28 +22,42 @@
       - curl
       - vim
       - git
-      - ttf-mscorefonts-installer
       - iotop
   when: ansible_distribution_major_version == "10"
   tags: basepackages
 
-- name: Install OS Base Packages Debian 12
+- name: Install OS Base RPi Packages Debian 10
   become: yes
-  apt: 
+  apt:
     install_recommends: yes
     update_cache: yes
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      ### The following may have been a legacy from Buster, since they are not found in Bullseye based Raspbian 
-      - aptitude
       - dkms
+      - console-data
       - xkbset
+      - raspberrypi-kernel-headers
+      - ttf-mscorefonts-installer
+  when:
+    - ansible_distribution_major_version == "10"
+    - inventory_hostname in groups['pi_server']
+  tags: basepackages
+
+- name: Install OS Base Packages Debian 12
+  become: yes
+  apt:
+    install_recommends: yes
+    update_cache: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - aptitude
       - dnsutils
       - screen
       - python3-apt
-      - raspberrypi-kernel-headers
       - debian-archive-keyring
       - locales-all
       - rsync
@@ -56,8 +65,25 @@
       - curl
       - vim
       - git
-      - ttf-mscorefonts-installer
       - iotop
   when: ansible_distribution_major_version == "12"
+  tags: basepackages
+
+- name: Install OS Base RPi Packages Debian 12
+  become: yes
+  apt:
+    install_recommends: yes
+    update_cache: yes
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - dkms
+      - xkbset
+      - raspberrypi-kernel-headers
+      - ttf-mscorefonts-installer
+  when:
+    - ansible_distribution_major_version == "12"
+    - inventory_hostname in groups['pi_server']
   tags: basepackages
 

@@ -16,7 +16,7 @@ Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Sect
 | [x] 09 | Rename playbooks | [task-09-rename-playbooks.md](../specs/task-09-rename-playbooks.md) | §2.8 REQ-PLY-01, REQ-PLY-03 – REQ-PLY-06 |
 | [x] 10 | Add generic_server inventory group and create prepGenericHwServer.yml | [task-10-generic-inventory-and-playbook.md](../specs/task-10-generic-inventory-and-playbook.md) | §2.1 REQ-PLT-01, §2.8 REQ-PLY-02 |
 | [x] 11 | Gate os_base tasks by platform | [task-11-gate-os-base-for-platform.md](../specs/task-11-gate-os-base-for-platform.md) | §2.1 REQ-PLT-02, §2.4 REQ-BASE-01 – REQ-BASE-09 |
-| [ ] 12 | Gate os_base_packages tasks by platform | [task-12-gate-os-base-packages-for-platform.md](../specs/task-12-gate-os-base-packages-for-platform.md) | §2.5 REQ-PKG-01, REQ-PKG-02 |
+| [x] 12 | Gate os_base_packages tasks by platform | [task-12-gate-os-base-packages-for-platform.md](../specs/task-12-gate-os-base-packages-for-platform.md) | §2.5 REQ-PKG-01, REQ-PKG-02 |
 | [ ] 13 | Refactor kernel module blacklisting to use per-host variables | [task-13-refactor-kernel-module-host-vars.md](../specs/task-13-refactor-kernel-module-host-vars.md) | §2.3 REQ-KRN-01 – REQ-KRN-06 |
 | [ ] 14 | Gate RPi-specific kernel tasks by platform | [task-14-gate-kernel-rpi-tasks.md](../specs/task-14-gate-kernel-rpi-tasks.md) | §2.3 REQ-KRN-07, REQ-KRN-08 |
 | [ ] 15 | Implement per-host user management | [task-15-per-host-user-management.md](../specs/task-15-per-host-user-management.md) | §2.2 REQ-USR-01, REQ-USR-02 |
