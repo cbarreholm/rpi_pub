@@ -17,6 +17,11 @@
   when: ansible_user_id != 'pi'
   tags: users
 
+- name: Remove generated pi password file from controller
+  local_action: file path="credentials/pi/password.txt" state=absent
+  when: ansible_user_id != 'pi'
+  tags: users
+
 - name: "Disable 'pi' user"
   become: yes
   user:
@@ -36,6 +41,10 @@
   tags: ssh
 
 
+# Accepted risk: the alt user has passwordless sudo (via Raspberry Pi OS default
+# sudoers). This is required for Ansible to run become tasks without a password.
+# Compensating control: SSH key-only authentication is enforced, so a compromised
+# session requires a stolen private key, not just a password.
 - name: "Adding user '{{ ansible_user_id }}'' to 'ssh-users'"
   become: yes
   user: 

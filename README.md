@@ -120,7 +120,10 @@ sudo nmcli connection add type wifi con-name TheConnectionName ssid TheSsId 802-
 The first steps can be achieved by configuring those details while burning the OS image.
 
 ## Passwordless sudoer
-The alternative user needs passwordless sudo permissions, which can be achieved like this (or while burning image): 
+The alternative user needs passwordless sudo permissions, which can be achieved like this (or while burning image):
+
+> **Security note:** Passwordless sudo is an accepted design trade-off. Ansible requires it to run `become` tasks without a vault password. The compensating control is SSH key-only authentication — a compromised session requires a stolen private key, not just a password.
+
 
 ```
 USER=myalternativeuser
@@ -129,6 +132,10 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" > $SUDOERSDFILE
 chmod 0440 $SUDOERSDFILE
 chown root:root $SUDOERSDFILE    
 ```
+
+## Generated credentials
+
+Ansible generates a random password for the `pi` user and automatically deletes it from the controller (`credentials/pi/password.txt`) after applying it to the host. The pi account is immediately locked, so the password is never usable. A new random password is generated on each playbook run.
 
 # How To Get This Repository
 `git clone git@github.com:cbarreholm/rpi_pub.git`
