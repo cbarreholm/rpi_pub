@@ -22,3 +22,4 @@ Available playbooks: `prepPi.yml`, `prepPiMosquitto.yml`, `prepPiZigbee2Mqtt.yml
  - Never change a test to make it pass.
  - README.md is a living artifact — update it whenever requirements or design decisions change.
  - Always verify .gitignore covers any sensitive files before committing.
+ - Run tasks in plans sequentially, tracking progress in task table in the applicable plan file. Instructing user to clear context inbetween tasks for focus. 
