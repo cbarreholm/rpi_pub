@@ -64,6 +64,20 @@ all:
 
     mosquitto_server:
       hosts:
-        mosquitto: 
-          ansible_user: "{{ host_alt_user }}" 
+        mosquitto:
+          ansible_user: "{{ host_alt_user }}"
           ansible_port: 22
+
+    generic_server:
+      hosts:
+        # cloud-reverseproxy:
+        #   config_system_hostname: "{{host_reverseproxy_config_system_hostname}}"
+        #   ansible_user: "{{ host_alt_user }}"
+        #   ansible_port: 22
+        #   firewall_outbound_dns_ips: # Check with: resolvconf -l
+        #     - "{{subnet_primary_slash24}}.1"
+        #   firewall_inbound_http_port: "80"
+        #   firewall_inbound_https_port: "443"
+        #   firewall_outbound_upstream_ip: "{{host_reverseproxy_upstream_ip}}"
+        #   firewall_outbound_upstream_port: "{{host_reverseproxy_upstream_port}}"
+        #   requires_bluetooth: false
