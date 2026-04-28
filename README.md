@@ -123,7 +123,7 @@ I'll list some features of this repository and ansible setup. This can also be k
 ```
 sudo nmcli connection add type wifi con-name TheConnectionName ssid TheSsId 802-11-wireless-security.key-mgmt WPA-PSK 802-11-wireless-security.psk TheSecret
 ```
-* You have created an alternative user with sudo permissions. You should not run as user `pi`, which will be disabled
+* You have created an alternative user with sudo permissions. You should not run as default user `pi` (or `debian`), which will be disabled
 * You have done 'ssh-copy-id -i ~/.ssh/id_rsa.pub <user>@<your pi's IP address>'
 * You can successfully login to <user>@<your pi's IP address> using passwordless (key-based) authentication with no errors.
 * You can sucessfully run sudo without as password. Verify by running `sudo visudo`
