@@ -3,7 +3,7 @@
 
 - name: Install OS Base Packages  Debian 10
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -28,7 +28,7 @@
 
 - name: Install OS Base RPi Packages Debian 10
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -47,7 +47,7 @@
 
 - name: Install OS Base Packages Debian 12
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -71,7 +71,7 @@
 
 - name: Install OS Base RPi Packages Debian 12
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"

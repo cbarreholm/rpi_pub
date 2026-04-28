@@ -3,7 +3,7 @@
 
 - name: Install unattended upgrades package  (if not present)
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -17,7 +17,7 @@
 
 - name: Copy 50unattended-upgrades
   become: true
-  copy:
+  ansible.builtin.copy:
     src: autoupdate/50unattended-upgrades
     dest: /etc/apt/apt.conf.d/
     owner: root

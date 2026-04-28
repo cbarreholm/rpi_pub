@@ -3,7 +3,7 @@
 
 - name: Install Packages needed for zigbee2mqtt
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -17,7 +17,7 @@
 
 - name: Create directory for source files
   become: true
-  file:
+  ansible.builtin.file:
     path: /opt/zigbee2mqtt
     state: directory
     owner: "{{ host_alt_user }}"
@@ -32,7 +32,7 @@
   tags: zigbee2mqtt
 
 - name: Download source files from github
-  git:
+  ansible.builtin.git:
     repo: https://github.com/Koenkk/zigbee2mqtt.git
     dest: /opt/zigbee2mqtt
     depth: 1
@@ -41,20 +41,20 @@
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Install dependencies
-  command: npm ci
+  ansible.builtin.command: npm ci
   args:
     chdir: /opt/zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Build
-  command: npm run build
+  ansible.builtin.command: npm run build
   args:
     chdir: /opt/zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Setup configuration.yaml
   become: true
-  template:
+  ansible.builtin.template:
     src: zigbee2mqtt/configuration.yaml.j2
     dest: /opt/zigbee2mqtt/data/configuration.yaml
     backup: true
@@ -63,7 +63,7 @@
 
 - name: Setup systemd service
   become: true
-  template:
+  ansible.builtin.template:
     src: zigbee2mqtt/zigbee2mqtt.service.j2
     dest: /etc/systemd/system/zigbee2mqtt.service
   tags: zigbee2mqtt,zigbee2mqtt.service

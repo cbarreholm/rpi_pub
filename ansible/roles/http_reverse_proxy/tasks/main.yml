@@ -2,5 +2,5 @@
 # tasks file for http_reverse_proxy role
 
 - name: Import nginx tasks
-  import_tasks: nginx.yml
+  ansible.builtin.import_tasks: nginx.yml
   tags: nginx

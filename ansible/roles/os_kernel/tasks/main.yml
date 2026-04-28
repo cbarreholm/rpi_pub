@@ -3,7 +3,7 @@
 
 - name: Ensure mounting of cramfs filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/cramfs.conf"
     content: |
       install cramfs /bin/true
@@ -11,7 +11,7 @@
 
 - name: Ensure mounting of dccp filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/dccp.conf"
     content: |
       install dccp /bin/true
@@ -19,7 +19,7 @@
 
 - name: Ensure mounting of freevxfs filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/freevxfs.conf"
     content: |
       install freevxfs /bin/true
@@ -27,7 +27,7 @@
 
 - name: Ensure mounting of hfs filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/hfs.conf"
     content: |
       install hfs /bin/true
@@ -35,7 +35,7 @@
 
 - name: Ensure mounting of hfsplus filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/hfsplus.conf"
     content: |
       install hfsplus /bin/true
@@ -43,7 +43,7 @@
 
 - name: Ensure mounting of jffs2 filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/jffs2.conf"
     content: |
       install jffs2 /bin/true
@@ -51,7 +51,7 @@
 
 - name: Ensure mounting of rds filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/rds.conf"
     content: |
       install rds /bin/true
@@ -59,7 +59,7 @@
 
 - name: Ensure mounting of sctp filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/sctp.conf"
     content: |
       install sctp /bin/true
@@ -67,7 +67,7 @@
 
 - name: Ensure mounting of squashfs filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/squashfs.conf"
     content: |
       install squashfs /bin/true
@@ -75,7 +75,7 @@
 
 - name: Ensure mounting of tipc filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/tipc.conf"
     content: |
       install tipc /bin/true
@@ -83,7 +83,7 @@
 
 - name: Ensure mounting of udf filesystems is disabled
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/udf.conf"
     content: |
       install udf /bin/true
@@ -91,7 +91,7 @@
 
 - name: Disable IPV6
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/ipv6.conf"
     content: |
       blacklist ipv6
@@ -99,7 +99,7 @@
 
 - name: Disable Bluetooth
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/disable_bluetooth.conf"
     content: |
       blacklist hci_uart
@@ -113,7 +113,7 @@
 
 - name: Disable FireWire
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/disable_firewire.conf"
     content: |
       blacklist ohci1394
@@ -128,7 +128,7 @@
 
 - name: Disable USB Storage
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/disable_usb-storage.conf"
     content: |
       blacklist usb-storage
@@ -137,7 +137,7 @@
 
 - name: Disable Wi-Fi Power Saving (non pi zero w models)
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/modprobe.d/disable_wifi_powersaving.conf"
     content: |
       options 8192cu rtw_power_mgnt=0
@@ -152,7 +152,7 @@
 
 - name: Ensure Kernel Hardening via Sysctl is present
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/sysctl.d/10-harden_sysctl.conf"
     content: |
       ## Kernel Items
@@ -194,14 +194,14 @@
 
 - name: Reload Sysctl Changes
   become: true
-  command: sysctl -p
+  ansible.builtin.command: sysctl -p
   register: sysctl_status
   changed_when: false
   tags: sysctl
 
 - name: Disable Wi-Fi Power Savings (pi zero w models)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rc.local
     insertbefore: '^exit 0'
     line: '/sbin/iwconfig wlan0 power off'
@@ -212,9 +212,9 @@
 
 - name: Set Kernel Scheduler (Kyber) boot cmdline (elevator=kyber)
   become: true
-  replace:
+  ansible.builtin.replace:
     path: /boot/cmdline.txt
-    replace: "elevator={{item}} "
+    ansible.builtin.replace: "elevator={{item}} "
     regexp: 'elevator=[a-z]*\s?'
   with_items:
     - kyber
@@ -223,14 +223,14 @@
 
 - name: Set Kernel Scheduler (Kyber) On System Already Running
   become: true
-  command: 'echo kyber > /sys/block/mmcblk0/queue/scheduler'
+  ansible.builtin.command: 'echo kyber > /sys/block/mmcblk0/queue/scheduler'
   changed_when: false
   when: inventory_hostname in groups['pi_server']
   tags: kernelscheduler
 
 - name: Enable Kernel Scheduler (Kyber) on Reboot (Persistent)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rc.local
     insertbefore: '^exit 0'
     line: 'echo kyber > /sys/block/mmcblk0/queue/scheduler'

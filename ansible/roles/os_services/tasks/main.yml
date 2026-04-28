@@ -2,17 +2,17 @@
 # tasks file for os_servies role
 
 - name: Import firewall tasks
-  import_tasks: firewall.yml
+  ansible.builtin.import_tasks: firewall.yml
   tags: firewall
 - name: Import autoupdate tasks
-  import_tasks: autoupdate.yml
+  ansible.builtin.import_tasks: autoupdate.yml
   tags: autoupdate
 - name: Import SSH tasks
-  import_tasks: ssh.yml
+  ansible.builtin.import_tasks: ssh.yml
   tags: ssh
 - name: Import rsyslog tasks
-  import_tasks: rsyslog.yml
+  ansible.builtin.import_tasks: rsyslog.yml
   tags: rsyslog
 - name: Import fail2ban tasks
-  import_tasks: fail2ban.yml
+  ansible.builtin.import_tasks: fail2ban.yml
   tags: fail2ban

@@ -2,7 +2,7 @@
 # tasks file for os
 
 - name: Gather os specific variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
     - "{{ ansible_distribution }}.yml"
@@ -32,38 +32,38 @@
 
 - name: Get current locale and language configuration
   become: true
-  command: localectl status
+  ansible.builtin.command: localectl status
   register: locale_status
   changed_when: false
   tags: locale
 
 - name: Parse 'LANG' from current locale and language configuration
   become: true
-  set_fact:
+  ansible.builtin.set_fact:
     locale_lang: "{{ locale_status.stdout | default('') | regex_search('LANG=([^\n]+)', '\\1') | default([config_system_locale], true) | first }}"
   tags: locale
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
   become: true
-  set_fact:
+  ansible.builtin.set_fact:
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
   tags: locale
 
 - name: Configure locale and language
   become: true
-  command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
+  ansible.builtin.command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
   tags: locale
 
 - name: Check if /etc/default/keyboard exists
-  stat:
+  ansible.builtin.stat:
     path: /etc/default/keyboard
   register: keyboard_file
   tags: keyboard
 
 - name: Set Keyboard Layout to {{ config_keyboard_layout }}
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/default/keyboard
     regexp: "^XKBLAYOUT="
     line: "XKBLAYOUT=\"{{config_keyboard_layout}}\""
@@ -73,7 +73,7 @@
 
 - name: Fixup APT Configs
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/apt/apt.conf.d/99-custom-configs"
     content: |
       Acquire::Languages "none";
@@ -90,7 +90,7 @@
 
 - name: Fixup APT Cache
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: "/etc/apt/apt.conf.d/99-custom-cache"
     content: |
       Dir::Cache "/tmp/apt";
@@ -101,25 +101,25 @@
 
 - name: Select raspbian mirror to {{ config_apt_mirror_url }}
   become: true
-  replace:
+  ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(?!-security)) (.*) (.*) (.*) (.*)$'
-    replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
+    ansible.builtin.replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
   when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
 - name: Select raspbian security mirror to {{ config_apt_security_mirror_url }}
   become: true
-  replace:
+  ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(-security)) (.*) (.*) (.*) (.*)$'
-    replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
+    ansible.builtin.replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
   when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
 - name: Obtain system PARTUUID for /boot
   become: true
-  command: "findmnt -no PARTUUID /boot"
+  ansible.builtin.command: "findmnt -no PARTUUID /boot"
   register: var_part_boot
   changed_when: false
   when:
@@ -129,7 +129,7 @@
 
 - name: Obtain system PARTUUID for /boot/firmware
   become: true
-  command: "findmnt -no PARTUUID /boot/firmware"
+  ansible.builtin.command: "findmnt -no PARTUUID /boot/firmware"
   register: var_part_boot_firmware
   changed_when: false
   when:
@@ -139,14 +139,14 @@
 
 - name: Obtain system PARTUUID for /
   become: true
-  command: "findmnt -no PARTUUID /"
+  ansible.builtin.command: "findmnt -no PARTUUID /"
   register: var_part_root
   changed_when: false
   tags: fstabsetup
 
 - name: Setup fstab file
   become: true
-  template: src={{ item }} dest=/etc/fstab backup=yes
+  ansible.builtin.template: src={{ item }} dest=/etc/fstab backup=yes
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.fstab.j2"
     - "{{ ansible_distribution }}.fstab.j2"
@@ -156,7 +156,7 @@
 
 - name: Set Swap File Size (256M)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/dphys-swapfile
     regexp: "^CONF_SWAPSIZE=(.*)"
     line: "CONF_SWAPSIZE=256"
@@ -171,14 +171,14 @@
 
 - name: Update /etc/hosts with '{{config_system_hostname}}'
   become: true
-  replace:
+  ansible.builtin.replace:
     dest: /etc/hosts
     regexp: "^(127.0.1.1)(\\s)*(raspberrypi)$"
-    replace: '\1\2{{config_system_hostname}}'
+    ansible.builtin.replace: '\1\2{{config_system_hostname}}'
   when: inventory_hostname in groups['pi_server']
   tags: hostname
 
 - name: Import secondary disk tasks
-  import_tasks: secondary_disk.yml
+  ansible.builtin.import_tasks: secondary_disk.yml
   when: secondary_disk_device is defined and secondary_disk_device != ""
   tags: secondary_disk

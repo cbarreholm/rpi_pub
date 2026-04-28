@@ -3,7 +3,7 @@
 
 - name: Install ufw firewall package  (if not present)
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     name: "ufw"
     state: present

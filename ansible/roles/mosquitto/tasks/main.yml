@@ -3,7 +3,7 @@
 
 - name: Install Packages needed for mosquitto
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
@@ -15,18 +15,18 @@
 
 - name: Touch pwfile
   become: true
-  command: "touch /etc/mosquitto/pwfile"
+  ansible.builtin.command: "touch /etc/mosquitto/pwfile"
   tags: mosquitto,mosquitto.user
 
 - name: Add user
   become: true
-  command: "mosquitto_passwd  -b /etc/mosquitto/pwfile {{zigbee2mqtt_mqtt_username}} {{zigbee2mqtt_mqtt_password}}"
+  ansible.builtin.command: "mosquitto_passwd  -b /etc/mosquitto/pwfile {{zigbee2mqtt_mqtt_username}} {{zigbee2mqtt_mqtt_password}}"
   changed_when: false
   tags: mosquitto,mosquitto.user
 
 - name: Setup global.conf
   become: true
-  template:
+  ansible.builtin.template:
     src: conf.d/global.conf.j2
     dest: /etc/mosquitto/conf.d/global.conf
     backup: false
@@ -35,7 +35,7 @@
 
 - name: Setup listener.conf
   become: true
-  template:
+  ansible.builtin.template:
     src: conf.d/listener.conf.j2
     dest: /etc/mosquitto/conf.d/listener.conf
     backup: false
@@ -44,7 +44,7 @@
 
 - name: Setup bridge.conf
   become: true
-  template:
+  ansible.builtin.template:
     src: conf.d/bridge.conf.j2
     dest: /etc/mosquitto/conf.d/bridge.conf
     backup: false

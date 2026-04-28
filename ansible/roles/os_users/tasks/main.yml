@@ -3,7 +3,7 @@
 
 
 - name: Abort if running as default platform user
-  fail:
+  ansible.builtin.fail:
     msg: "Playbook must not be run as the '{{ platform_default_user }}' user. Create an alternative sudo user first and re-run as that user."
   when: ansible_user_id == platform_default_user
   tags: users
@@ -11,20 +11,20 @@
 
 - name: Update default user with auto generated password
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ platform_default_user }}"
     password: "{{ lookup('password', 'credentials/' + platform_default_user + '/password.txt encrypt=sha512_crypt') }}"
   when: ansible_user_id != platform_default_user
   tags: users
 
 - name: Remove generated password file from controller
-  local_action: file path="credentials/{{ platform_default_user }}/password.txt" state=absent
+  local_action: ansible.builtin.file path="credentials/{{ platform_default_user }}/password.txt" state=absent
   when: ansible_user_id != platform_default_user
   tags: users
 
 - name: Disable default platform user
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ platform_default_user }}"
     shell: /sbin/nologin
     password_lock: true
@@ -35,7 +35,7 @@
 
 - name: "Create SSH group 'ssh-users'"
   become: true
-  group:
+  ansible.builtin.group:
     name: ssh-users
   when: ansible_user_id != platform_default_user
   tags: ssh
@@ -47,7 +47,7 @@
 # session requires a stolen private key, not just a password.
 - name: Add current user to ssh-users group
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     groups: [ssh-users]
     append: true

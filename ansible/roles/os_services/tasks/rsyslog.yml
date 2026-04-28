@@ -3,7 +3,7 @@
 
 - name: Install rsyslog package  (if not present)
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     name: "{{ packages }}"
     state: present
@@ -14,7 +14,7 @@
 
 - name: Configure rsyslog Service (enable high precision timestamps)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rsyslog.conf
     regexp: '^#\$ActionFileDefaultTemplate(.*)'
     line: '$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
@@ -24,7 +24,7 @@
 
 - name: Restart rsyslog
   become: true
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: restarted
   changed_when: false

@@ -3,7 +3,7 @@
 
 - name: Install openssh-server package (if not present)
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     name: "{{ packages }}"
     state: present
@@ -15,7 +15,7 @@
 
 - name: Configure SSH Service (Port 22)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#Port(.*)'
     line: 'Port 22'
@@ -24,7 +24,7 @@
 
 - name: Configure SSH Service (AddressFamily inet)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#AddressFamily(.*)'
     line: 'AddressFamily inet'
@@ -33,7 +33,7 @@
 
 - name: Configure SSH Service (ListenAddress 0.0.0.0)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#ListenAddress 0.0.0.0'
     line: 'ListenAddress 0.0.0.0'
@@ -42,7 +42,7 @@
 
 - name: Configure SSH Service (AllowTcpForwarding no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#AllowTcpForwarding(.*)'
     line: 'AllowTcpForwarding no'
@@ -51,7 +51,7 @@
 
 - name: Configure SSH Service (ClientAliveCountMax 2)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#ClientAliveCountMax(.*)'
     line: 'ClientAliveCountMax 2'
@@ -60,7 +60,7 @@
 
 - name: Configure SSH Service (MaxAuthTries 3)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#MaxAuthTries(.*)'
     line: 'MaxAuthTries 3'
@@ -69,7 +69,7 @@
 
 - name: Configure SSH Service (MaxSessions 2)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#MaxSessions(.*)'
     line: 'MaxSessions 2'
@@ -78,7 +78,7 @@
 
 - name: Configure SSH Service (TCPKeepAlive no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#TCPKeepAlive(.*)'
     line: 'TCPKeepAlive no'
@@ -87,7 +87,7 @@
 
 - name: Configure SSH Service (X11Forwarding no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^X11Forwarding(.*)'
     line: 'X11Forwarding no'
@@ -96,7 +96,7 @@
 
 - name: Configure SSH Service (AllowAgentForwarding no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#AllowAgentForwarding(.*)'
     line: 'AllowAgentForwarding no'
@@ -105,7 +105,7 @@
 
 - name: Configure SSH Service (Compression no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#Compression(.*)'
     line: 'Compression no'
@@ -115,7 +115,7 @@
 # VERBOSE ensures SSH auth failures are visible to fail2ban's sshd jail
 - name: Configure SSH Service (LogLevel VERBOSE)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?LogLevel(.*)'
     line: 'LogLevel VERBOSE'
@@ -124,7 +124,7 @@
 
 - name: Configure SSH Service (Ciphers)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?Ciphers(.*)'
     line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com'
@@ -133,7 +133,7 @@
 
 - name: Configure SSH Service (MACs)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?MACs(.*)'
     line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com'
@@ -142,7 +142,7 @@
 
 - name: Configure SSH Service (KexAlgorithms)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?KexAlgorithms(.*)'
     line: 'KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256'
@@ -151,7 +151,7 @@
 
 - name: Configure SSH Service (LoginGraceTime 30)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?LoginGraceTime(.*)'
     line: 'LoginGraceTime 30'
@@ -160,7 +160,7 @@
 
 - name: Configure SSH Service (PermitEmptyPasswords no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?PermitEmptyPasswords(.*)'
     line: 'PermitEmptyPasswords no'
@@ -169,7 +169,7 @@
 
 - name: Configure SSH Service (PermitRootLogin no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#PermitRootLogin(.*)'
     line: 'PermitRootLogin no'
@@ -178,7 +178,7 @@
 
 - name: Configure SSH Service (PasswordAuthentication no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#PasswordAuthentication(.*)'
     line: 'PasswordAuthentication no'
@@ -188,7 +188,7 @@
 
 - name: Configure SSH Service (UsePAM no)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#UsePAM(.*)'
     line: 'UsePAM no'
@@ -197,7 +197,7 @@
 
 - name: Configure SSH Service (AllowGroups ssh-users)
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#AllowGroups(.*)'
     line: 'AllowGroups ssh-users'
@@ -206,7 +206,7 @@
 
 - name: Reload ssh
   become: true
-  service:
+  ansible.builtin.service:
     name: ssh
     state: reloaded
   changed_when: false

@@ -3,7 +3,7 @@
 
 - name: Install fail2ban package  (if not present)
   become: true
-  apt:
+  ansible.builtin.apt:
     install_recommends: true
     name: "{{ packages }}"
     state: present
@@ -14,7 +14,7 @@
 
 - name: Create a symbolic link
   become: true
-  file:
+  ansible.builtin.file:
     src: /etc/fail2ban/filter.d/apache-badbots.conf
     dest: /etc/fail2ban/filter.d/nginx-badbots.conf
     owner: root
@@ -24,7 +24,7 @@
 
 - name: Copy jail.local
   become: true
-  copy:
+  ansible.builtin.copy:
     src: fail2ban/jail.local
     dest: /etc/fail2ban/
     owner: root
@@ -34,7 +34,7 @@
 
 - name: Copy nginx-noscript.conf
   become: true
-  copy:
+  ansible.builtin.copy:
     src: fail2ban/nginx-noscript.conf
     dest: /etc/fail2ban/filter.d/
     owner: root
