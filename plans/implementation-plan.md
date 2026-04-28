@@ -2,6 +2,7 @@
 
 Tasks 01–08 are verification tasks for the existing Raspberry Pi baseline (Section 1).
 Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Section 2).
+Tasks 18–19 are implementation tasks for Additional User Management (Section 3).
 
 | Task | Description | Spec | Requirements |
 |------|-------------|------|--------------|
@@ -22,3 +23,5 @@ Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Sect
 | [x] 15 | Implement per-host user management | [task-15-per-host-user-management.md](../specs/task-15-per-host-user-management.md) | §2.2 REQ-USR-01, REQ-USR-02 |
 | [x] 16 | Implement secondary disk management | [task-16-secondary-disk.md](../specs/task-16-secondary-disk.md) | §2.6 REQ-DSK-01 – REQ-DSK-05 |
 | [x] 17 | Document playbook applicability in README | [task-17-playbook-applicability.md](../specs/task-17-playbook-applicability.md) | §2.8 REQ-PLY-07 – REQ-PLY-10 |
+| [ ] 18 | Implement additional admin users | [task-18-additional-admin-users.md](../specs/task-18-additional-admin-users.md) | §3.1 REQ-AUSR-01 – REQ-AUSR-09 |
+| [ ] 19 | Implement limited users | [task-19-limited-users.md](../specs/task-19-limited-users.md) | §3.2 REQ-LUSR-01 – REQ-LUSR-08 |

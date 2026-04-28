@@ -235,3 +235,49 @@ REQ-PLY-08: The `prepMiFloraServer.yml` playbook shall only be applicable to hos
 REQ-PLY-09: The `prepMosquitto.yml` playbook shall be applicable on all platforms.
 
 REQ-PLY-10: The `prepHttpReverseProxy.yml` playbook shall be applicable on all platforms.
+
+---
+
+## 3. Additional User Management
+
+### Scope
+
+Extend the `os_users` role to support optionally configuring additional users beyond the primary admin. Two categories are supported: secondary admin users with passwordless sudo and SSH key access, and limited users with restricted shells and no elevated privileges. This applies to all platforms.
+
+### 3.1 Additional Admin Users
+
+REQ-AUSR-01: The `os_users` role shall optionally create one or more additional admin users defined in the `additional_admin_users` list variable.
+
+REQ-AUSR-02: Each entry in `additional_admin_users` shall specify at minimum a `name` and an `ssh_public_key`.
+
+REQ-AUSR-03: The `os_users` role shall create the user account for each entry in `additional_admin_users` if it does not already exist, with a locked password.
+
+REQ-AUSR-04: The `os_users` role shall configure SSH public key authentication for each additional admin user using the provided `ssh_public_key`.
+
+REQ-AUSR-05: The `os_users` role shall create an `alt-admins` group when `additional_admin_users` is non-empty.
+
+REQ-AUSR-06: The `os_users` role shall add each additional admin user to the `alt-admins` group.
+
+REQ-AUSR-07: The `os_users` role shall create a sudoers drop-in file granting the `alt-admins` group full passwordless sudo (`%alt-admins ALL=(ALL) NOPASSWD: ALL`), owned by `root:root` with mode `0440`.
+
+REQ-AUSR-08: The `os_users` role shall add each additional admin user to the `ssh-users` group to permit SSH login.
+
+REQ-AUSR-09: When `additional_admin_users` is not defined or is empty, the `os_users` role shall skip all additional admin user configuration.
+
+### 3.2 Limited Users
+
+REQ-LUSR-01: The `os_users` role shall optionally create one or more limited users defined in the `additional_limited_users` list variable.
+
+REQ-LUSR-02: Each entry in `additional_limited_users` shall specify at minimum a `name` and a `shell`.
+
+REQ-LUSR-03: The `os_users` role shall create the user account for each entry in `additional_limited_users` with the specified `shell` as the login shell and a locked password.
+
+REQ-LUSR-04: Limited users shall not be added to the `alt-admins`, `sudo`, or any other privileged group.
+
+REQ-LUSR-05: When `ssh_public_key` is provided for a limited user entry, the `os_users` role shall configure SSH public key authentication for that user.
+
+REQ-LUSR-06: When `ssh_public_key` is provided for a limited user entry, the `os_users` role shall add that user to the `ssh-users` group to permit SSH login.
+
+REQ-LUSR-07: A supported use case for limited users is git-only access, achieved by setting `shell` to `/usr/bin/git-shell`.
+
+REQ-LUSR-08: When `additional_limited_users` is not defined or is empty, the `os_users` role shall skip all limited user configuration.
