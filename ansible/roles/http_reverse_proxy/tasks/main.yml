@@ -1,5 +1,6 @@
 ---
 # tasks file for http_reverse_proxy role
 
-- import_tasks: nginx.yml
+- name: Import nginx tasks
+  import_tasks: nginx.yml
   tags: nginx

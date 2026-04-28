@@ -2,14 +2,14 @@
 # tasks file for OS users
 
 
-- name: "Not allowed to run as '{{ platform_default_user }}' user. Create alternative user first."
+- name: Abort if running as default platform user
   fail:
     msg: "Playbook must not be run as the '{{ platform_default_user }}' user. Create an alternative sudo user first and re-run as that user."
   when: ansible_user_id == platform_default_user
   tags: users
 
 
-- name: Update `{{ platform_default_user }}` with auto generated password
+- name: Update default user with auto generated password
   become: yes
   user:
     name: "{{ platform_default_user }}"
@@ -17,12 +17,12 @@
   when: ansible_user_id != platform_default_user
   tags: users
 
-- name: Remove generated {{ platform_default_user }} password file from controller
+- name: Remove generated password file from controller
   local_action: file path="credentials/{{ platform_default_user }}/password.txt" state=absent
   when: ansible_user_id != platform_default_user
   tags: users
 
-- name: "Disable '{{ platform_default_user }}' user"
+- name: Disable default platform user
   become: yes
   user:
     name: "{{ platform_default_user }}"
@@ -45,7 +45,7 @@
 # sudoers). This is required for Ansible to run become tasks without a password.
 # Compensating control: SSH key-only authentication is enforced, so a compromised
 # session requires a stolen private key, not just a password.
-- name: "Adding user '{{ ansible_user_id }}'' to 'ssh-users'"
+- name: Add current user to ssh-users group
   become: yes
   user:
     name: "{{ ansible_user_id }}"

@@ -16,14 +16,14 @@
     name: "{{ config_timezone }}"
   tags: timezone
 
-- name: Ensure localisation files for system locale '{{ config_system_locale }}' are available
+- name: Ensure localisation files are available for system locale '{{ config_system_locale }}'
   become: yes
   locale_gen:
     name: "{{ config_system_locale }}"
     state: present
   tags: locale
 
-- name: Ensure localisation files for system language '{{ config_system_language }}' are available
+- name: Ensure localisation files are available for system language '{{ config_system_language }}'
   become: yes
   locale_gen:
     name: "{{ config_system_language }}"
@@ -49,7 +49,7 @@
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
   tags: locale
 
-- name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
+- name: Configure locale and language
   become: yes
   command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
@@ -119,7 +119,7 @@
   tags: apt-sources
 
 
-- name: obtain system PARTUUID for /boot
+- name: Obtain system PARTUUID for /boot
   become: yes
   command: "findmnt -no PARTUUID /boot"
   register: var_part_boot
@@ -129,7 +129,7 @@
     - ansible_distribution_major_version == "10"
   tags: fstabsetup
 
-- name: obtain system PARTUUID for /boot/firmware
+- name: Obtain system PARTUUID for /boot/firmware
   become: yes
   command: "findmnt -no PARTUUID /boot/firmware"
   register: var_part_boot_firmware
@@ -146,7 +146,7 @@
   changed_when: false
   tags: fstabsetup
 
-- name: Setup fstab file for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
+- name: Setup fstab file
   become: yes
   template: src={{ item }} dest=/etc/fstab backup=yes
   with_first_found:
@@ -180,7 +180,8 @@
   when: inventory_hostname in groups['pi_server']
   tags: hostname
 
-- import_tasks: secondary_disk.yml
+- name: Import secondary disk tasks
+  import_tasks: secondary_disk.yml
   when: secondary_disk_device is defined and secondary_disk_device != ""
   tags: secondary_disk
 

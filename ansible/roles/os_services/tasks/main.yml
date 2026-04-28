@@ -1,13 +1,18 @@
 ---
 # tasks file for os_servies role
 
-- import_tasks: firewall.yml
+- name: Import firewall tasks
+  import_tasks: firewall.yml
   tags: firewall
-- import_tasks: autoupdate.yml
+- name: Import autoupdate tasks
+  import_tasks: autoupdate.yml
   tags: autoupdate
-- import_tasks: ssh.yml
+- name: Import SSH tasks
+  import_tasks: ssh.yml
   tags: ssh
-- import_tasks: rsyslog.yml
+- name: Import rsyslog tasks
+  import_tasks: rsyslog.yml
   tags: rsyslog
-- import_tasks: fail2ban.yml
+- name: Import fail2ban tasks
+  import_tasks: fail2ban.yml
   tags: fail2ban
