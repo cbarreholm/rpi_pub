@@ -2,10 +2,10 @@
 # tasks file zigbee2mqtt
 
 - name: Install Packages needed for zigbee2mqtt
-  become: yes
+  become: true
   apt: 
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -16,7 +16,7 @@
   tags: zigbee2mqtt
 
 - name: Create directory for source files
-  become: yes
+  become: true
   file: 
     path: /opt/zigbee2mqtt
     state: directory
@@ -26,7 +26,7 @@
 
 # There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
 - name: Disable firewall
-  become: yes
+  become: true
   ufw:
     state: disabled
   tags: zigbee2mqtt
@@ -53,39 +53,39 @@
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Setup configuration.yaml
-  become: yes
+  become: true
   template: 
     src: zigbee2mqtt/configuration.yaml.j2
     dest: /opt/zigbee2mqtt/data/configuration.yaml
-    backup: yes
+    backup: true
   changed_when: false
   tags: zigbee2mqtt,zigbee2mqtt.configuration
 
 - name: Setup systemd service
-  become: yes
+  become: true
   template: 
     src: zigbee2mqtt/zigbee2mqtt.service.j2
     dest: /etc/systemd/system/zigbee2mqtt.service
   tags: zigbee2mqtt,zigbee2mqtt.service
 
 - name: Reload service
-  become: yes
+  become: true
   ansible.builtin.systemd:
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
     name: zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.service
 
 - name: Enable service 
-  become: yes
+  become: true
   ansible.builtin.systemd:
-    enabled: yes
+    enabled: true
     name: zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.service
 
 
 - name: Enable firewall
-  become: yes
+  become: true
   ufw:
     state: enabled
   tags: zigbee2mqtt

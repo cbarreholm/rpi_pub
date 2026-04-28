@@ -4,7 +4,7 @@
 - name: Install nginx package  (if not present)
   become: true
   apt:
-    install_recommends: yes
+    install_recommends: true
     name: "{{ packages }}"
     state: present
   vars:

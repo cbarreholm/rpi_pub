@@ -10,7 +10,7 @@
 
 
 - name: Update default user with auto generated password
-  become: yes
+  become: true
   user:
     name: "{{ platform_default_user }}"
     password: "{{ lookup('password', 'credentials/' + platform_default_user + '/password.txt encrypt=sha512_crypt') }}"
@@ -23,7 +23,7 @@
   tags: users
 
 - name: Disable default platform user
-  become: yes
+  become: true
   user:
     name: "{{ platform_default_user }}"
     shell: /sbin/nologin
@@ -34,7 +34,7 @@
 
 
 - name: "Create SSH group 'ssh-users'"
-  become: yes
+  become: true
   group:
     name: ssh-users
   when: ansible_user_id != platform_default_user
@@ -46,10 +46,10 @@
 # Compensating control: SSH key-only authentication is enforced, so a compromised
 # session requires a stolen private key, not just a password.
 - name: Add current user to ssh-users group
-  become: yes
+  become: true
   user:
     name: "{{ ansible_user_id }}"
     groups: [ssh-users]
-    append: yes
+    append: true
   when: ansible_user_id != platform_default_user
   tags: ssh

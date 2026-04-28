@@ -2,7 +2,7 @@
 # handlers file for http_reverse_proxy
 
 - name: Restart nginx
-  become: yes
+  become: true
   service:
     name: nginx
     state: restarted

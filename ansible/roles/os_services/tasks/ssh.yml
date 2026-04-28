@@ -2,9 +2,9 @@
 # tasks file for ssh service
 
 - name: Install openssh-server package (if not present)
-  become: yes
+  become: true
   apt: 
-    install_recommends: yes
+    install_recommends: true
     name: "{{ packages }}"
     state: present
     #dpkg_options: 'force-confnew'
@@ -14,7 +14,7 @@
   tags: ssh
 
 - name: Configure SSH Service (Port 22)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#Port(.*)'
@@ -23,7 +23,7 @@
   tags: ssh
 
 - name: Configure SSH Service (AddressFamily inet)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#AddressFamily(.*)'
@@ -32,7 +32,7 @@
   tags: ssh
 
 - name: Configure SSH Service (ListenAddress 0.0.0.0)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#ListenAddress 0.0.0.0'
@@ -41,7 +41,7 @@
   tags: ssh
 
 - name: Configure SSH Service (AllowTcpForwarding no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#AllowTcpForwarding(.*)'
@@ -50,7 +50,7 @@
   tags: ssh
 
 - name: Configure SSH Service (ClientAliveCountMax 2)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#ClientAliveCountMax(.*)'
@@ -59,7 +59,7 @@
   tags: ssh
 
 - name: Configure SSH Service (MaxAuthTries 3)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#MaxAuthTries(.*)'
@@ -68,7 +68,7 @@
   tags: ssh
 
 - name: Configure SSH Service (MaxSessions 2)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#MaxSessions(.*)'
@@ -77,7 +77,7 @@
   tags: ssh
 
 - name: Configure SSH Service (TCPKeepAlive no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#TCPKeepAlive(.*)'
@@ -86,7 +86,7 @@
   tags: ssh
 
 - name: Configure SSH Service (X11Forwarding no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^X11Forwarding(.*)'
@@ -95,7 +95,7 @@
   tags: ssh
 
 - name: Configure SSH Service (AllowAgentForwarding no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#AllowAgentForwarding(.*)'
@@ -104,7 +104,7 @@
   tags: ssh
 
 - name: Configure SSH Service (Compression no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#Compression(.*)'
@@ -114,7 +114,7 @@
 
 # VERBOSE ensures SSH auth failures are visible to fail2ban's sshd jail
 - name: Configure SSH Service (LogLevel VERBOSE)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?LogLevel(.*)'
@@ -123,7 +123,7 @@
   tags: ssh
 
 - name: Configure SSH Service (Ciphers)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?Ciphers(.*)'
@@ -132,7 +132,7 @@
   tags: ssh
 
 - name: Configure SSH Service (MACs)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?MACs(.*)'
@@ -141,7 +141,7 @@
   tags: ssh
 
 - name: Configure SSH Service (KexAlgorithms)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?KexAlgorithms(.*)'
@@ -150,7 +150,7 @@
   tags: ssh
 
 - name: Configure SSH Service (LoginGraceTime 30)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?LoginGraceTime(.*)'
@@ -159,7 +159,7 @@
   tags: ssh
 
 - name: Configure SSH Service (PermitEmptyPasswords no)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^#?PermitEmptyPasswords(.*)'
@@ -168,7 +168,7 @@
   tags: ssh
 
 - name: Configure SSH Service (PermitRootLogin no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#PermitRootLogin(.*)'
@@ -177,7 +177,7 @@
   tags: ssh
 
 - name: Configure SSH Service (PasswordAuthentication no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#PasswordAuthentication(.*)'
@@ -187,7 +187,7 @@
 
 
 - name: Configure SSH Service (UsePAM no)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#UsePAM(.*)'
@@ -196,7 +196,7 @@
   tags: ssh
 
 - name: Configure SSH Service (AllowGroups ssh-users)
-  become: yes
+  become: true
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: '^#AllowGroups(.*)'
@@ -205,7 +205,7 @@
   tags: ssh
 
 - name: Reload ssh
-  become: yes
+  become: true
   service: 
     name: ssh
     state: reloaded

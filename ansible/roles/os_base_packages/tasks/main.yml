@@ -2,10 +2,10 @@
 # tasks file for os_base_packages
 
 - name: Install OS Base Packages  Debian 10
-  become: yes
+  become: true
   apt:
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -27,10 +27,10 @@
   tags: basepackages
 
 - name: Install OS Base RPi Packages Debian 10
-  become: yes
+  become: true
   apt:
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -46,10 +46,10 @@
   tags: basepackages
 
 - name: Install OS Base Packages Debian 12
-  become: yes
+  become: true
   apt:
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -70,10 +70,10 @@
   tags: basepackages
 
 - name: Install OS Base RPi Packages Debian 12
-  become: yes
+  become: true
   apt:
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:

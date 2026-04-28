@@ -17,40 +17,40 @@
   tags: timezone
 
 - name: Ensure localisation files are available for system locale '{{ config_system_locale }}'
-  become: yes
+  become: true
   locale_gen:
     name: "{{ config_system_locale }}"
     state: present
   tags: locale
 
 - name: Ensure localisation files are available for system language '{{ config_system_language }}'
-  become: yes
+  become: true
   locale_gen:
     name: "{{ config_system_language }}"
     state: present
   tags: locale
 
 - name: Get current locale and language configuration
-  become: yes
+  become: true
   command: localectl status
   register: locale_status
   changed_when: false
   tags: locale
 
 - name: Parse 'LANG' from current locale and language configuration
-  become: yes
+  become: true
   set_fact:
     locale_lang: "{{ locale_status.stdout | default('') | regex_search('LANG=([^\n]+)', '\\1') | default([config_system_locale], true) | first }}"
   tags: locale
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
-  become: yes
+  become: true
   set_fact:
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
   tags: locale
 
 - name: Configure locale and language
-  become: yes
+  become: true
   command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
   tags: locale
@@ -62,7 +62,7 @@
   tags: keyboard
 
 - name: Set Keyboard Layout to {{ config_keyboard_layout }}
-  become: yes
+  become: true
   lineinfile:
     path: /etc/default/keyboard
     regexp: "^XKBLAYOUT="
@@ -72,7 +72,7 @@
   tags: keyboard
 
 - name: Fixup APT Configs
-  become: yes
+  become: true
   copy:
     dest: "/etc/apt/apt.conf.d/99-custom-configs"
     content: |
@@ -89,7 +89,7 @@
   tags: apt
 
 - name: Fixup APT Cache
-  become: yes
+  become: true
   copy:
     dest: "/etc/apt/apt.conf.d/99-custom-cache"
     content: |
@@ -100,7 +100,7 @@
   tags: apt
 
 - name: Select raspbian mirror to {{ config_apt_mirror_url }}
-  become: yes
+  become: true
   replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(?!-security)) (.*) (.*) (.*) (.*)$'
@@ -110,7 +110,7 @@
 
 
 - name: Select raspbian security mirror to {{ config_apt_security_mirror_url }}
-  become: yes
+  become: true
   replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(-security)) (.*) (.*) (.*) (.*)$'
@@ -120,7 +120,7 @@
 
 
 - name: Obtain system PARTUUID for /boot
-  become: yes
+  become: true
   command: "findmnt -no PARTUUID /boot"
   register: var_part_boot
   changed_when: false
@@ -130,7 +130,7 @@
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /boot/firmware
-  become: yes
+  become: true
   command: "findmnt -no PARTUUID /boot/firmware"
   register: var_part_boot_firmware
   changed_when: false
@@ -140,14 +140,14 @@
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /
-  become: yes
+  become: true
   command: "findmnt -no PARTUUID /"
   register: var_part_root
   changed_when: false
   tags: fstabsetup
 
 - name: Setup fstab file
-  become: yes
+  become: true
   template: src={{ item }} dest=/etc/fstab backup=yes
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.fstab.j2"
@@ -157,7 +157,7 @@
   tags: fstabsetup
 
 - name: Set Swap File Size (256M)
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/dphys-swapfile
     regexp: "^CONF_SWAPSIZE=(.*)"
@@ -166,13 +166,13 @@
   tags: swapsize
 
 - name: Set hostname '{{config_system_hostname}}'
-  become: yes
+  become: true
   ansible.builtin.hostname:
     name: "{{config_system_hostname}}"  
   tags: hostname
 
 - name: Update /etc/hosts with '{{config_system_hostname}}'
-  become: yes
+  become: true
   replace:
     dest: /etc/hosts
     regexp: "^(127.0.1.1)(\\s)*(raspberrypi)$"

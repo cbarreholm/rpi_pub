@@ -2,10 +2,10 @@
 # tasks file for mqtt bridge
 
 - name: Install Packages needed for Mi Flora MQTT Bridge
-  become: yes
+  become: true
   apt: 
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -20,7 +20,7 @@
 
 
 - name: Create directory for source files
-  become: yes
+  become: true
   file: 
     path: /opt/miflora-mqtt-daemon
     state: directory
@@ -28,14 +28,14 @@
 
 # There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
 - name: Disable firewall
-  become: yes
+  become: true
   ufw:
     state: disabled
   tags: mi_flora
 
 
 - name: Download source files from github
-  become: yes
+  become: true
   git:
       repo: https://github.com/ThomDietrich/miflora-mqtt-daemon.git
       dest: /opt/miflora-mqtt-daemon
@@ -44,40 +44,40 @@
 
 
 - name: Install
-  become: yes
+  become: true
   command: pip3 install -r requirements.txt
   args:
       chdir: /opt/miflora-mqtt-daemon
 
 - name: Copy configuration in place
-  become: yes
+  become: true
   ansible.builtin.template:
     src: miflora-mqtt-daemon/config.ini
     dest: /opt/miflora-mqtt-daemon/config.ini
 
 - name: Copy service in place
-  become: yes
+  become: true
   copy:
-    remote_src: yes
+    remote_src: true
     src: /opt/miflora-mqtt-daemon/template.service
     dest: /etc/systemd/system/miflora.service
 
 - name: Reload service
-  become: yes
+  become: true
   ansible.builtin.systemd:
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
     name: miflora
 
 - name: Enable service 
-  become: yes
+  become: true
   ansible.builtin.systemd:
-    enabled: yes
+    enabled: true
     name: miflora
 
 
 - name: Enable firewall
-  become: yes
+  become: true
   ufw:
     state: enabled
   tags: mi_flora

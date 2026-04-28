@@ -2,10 +2,10 @@
 # tasks file for unattended auto update
 
 - name: Install unattended upgrades package  (if not present)
-  become: yes
+  become: true
   apt: 
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -16,7 +16,7 @@
   tags: autoupdate
 
 - name: Copy 50unattended-upgrades
-  become: yes
+  become: true
   copy: 
     src: autoupdate/50unattended-upgrades
     dest: /etc/apt/apt.conf.d/

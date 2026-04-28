@@ -2,7 +2,7 @@
 
 - name: Prepare Raspberry Pi server
   hosts: pi_server
-  gather_facts: True
+  gather_facts: true
   roles:
     - { role: os_users }
     - { role: os_base }

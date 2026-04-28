@@ -2,10 +2,10 @@
 # tasks file mosquitto
 
 - name: Install Packages needed for mosquitto
-  become: yes
+  become: true
   apt: 
-    install_recommends: yes
-    update_cache: yes
+    install_recommends: true
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -14,47 +14,47 @@
   tags: mosquitto
 
 - name: Touch pwfile
-  become: yes
+  become: true
   command: "touch /etc/mosquitto/pwfile"
   tags: mosquitto,mosquitto.user
 
 - name: Add user
-  become: yes
+  become: true
   command: "mosquitto_passwd  -b /etc/mosquitto/pwfile {{zigbee2mqtt_mqtt_username}} {{zigbee2mqtt_mqtt_password}}"
   changed_when: false
   tags: mosquitto,mosquitto.user
 
 - name: Setup global.conf
-  become: yes
+  become: true
   template: 
     src: conf.d/global.conf.j2
     dest: /etc/mosquitto/conf.d/global.conf
-    backup: no
+    backup: false
   changed_when: false
   tags: mosquitto,mosquitto.configuration  
 
 - name: Setup listener.conf
-  become: yes
+  become: true
   template: 
     src: conf.d/listener.conf.j2
     dest: /etc/mosquitto/conf.d/listener.conf
-    backup: no
+    backup: false
   changed_when: false
   tags: mosquitto,mosquitto.configuration  
 
 - name: Setup bridge.conf
-  become: yes
+  become: true
   template: 
     src: conf.d/bridge.conf.j2
     dest: /etc/mosquitto/conf.d/bridge.conf
-    backup: no
+    backup: false
   changed_when: false
   tags: mosquitto,mosquitto.configuration  
 
 - name: Reload service
-  become: yes
+  become: true
   ansible.builtin.systemd:
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
     name: zigbee2mqtt
   tags: mosquitto,mosquitto.configuration,mosquitto.service
