@@ -6,5 +6,6 @@ PARTUUID={{ var_part_root.stdout }}  /         ext4  defaults,noatime,commit=180
 /var                  /var      tmpfs rw,bind,noatime,nodev,nosuid        0 0
 /var/log              /var/log  tmpfs rw,bind,noatime,nodev,nosuid,noexec 0 0
 /var/tmp              /var/tmp  tmpfs rw,bind,noatime,nodev,nosuid,noexec 0 0
+/var/cache/apt        /var/cache/apt tmpfs rw,bind,noatime,nodev,nosuid,size=200m 0 0
 proc                  /proc     proc  defaults                            0 0
 tmpfs                 /dev/shm  tmpfs noatime,noexec,nodev,nosuid         0 0

@@ -81,13 +81,24 @@
   loop: "{{ firewall_outbound_dns_ips }}"
   tags: firewall
 
-- name: Allow apt updates to connect to specific IPs
+- name: Allow apt updates to connect to specific IPs (HTTP)
   become: true
   community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
     to_port: http
+    proto: tcp
+  loop: "{{ config_firewall_apt_update_ips }}"
+  tags: firewall
+
+- name: Allow apt updates to connect to specific IPs (HTTPS)
+  become: true
+  community.general.ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ item }}"
+    to_port: https
     proto: tcp
   loop: "{{ config_firewall_apt_update_ips }}"
   tags: firewall

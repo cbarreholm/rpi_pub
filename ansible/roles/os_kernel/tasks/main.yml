@@ -194,7 +194,7 @@
 
 - name: Reload Sysctl Changes
   become: true
-  ansible.builtin.command: sysctl -p
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/10-harden_sysctl.conf
   register: sysctl_status
   changed_when: false
   tags: sysctl

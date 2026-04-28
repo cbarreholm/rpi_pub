@@ -49,10 +49,21 @@
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
   tags: locale
 
-- name: Configure locale and language
+- name: Configure locale and language (pre Debian 13)
   become: true
   ansible.builtin.command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
+  when: ansible_distribution_major_version | int < 13
+  tags: locale
+
+- name: Configure locale and language (Debian 13)
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/default/locale
+    content: |
+      LANG={{ config_system_locale }}
+      LANGUAGE={{ config_system_language }}
+  when: ansible_distribution_major_version | int >= 13
   tags: locale
 
 - name: Check if /etc/default/keyboard exists
@@ -86,18 +97,6 @@
           "--force-confdef";
           "--force-confold";
       }
-    mode: "0644"
-  tags: apt
-
-- name: Fixup APT Cache
-  become: true
-  ansible.builtin.copy:
-    dest: "/etc/apt/apt.conf.d/99-custom-cache"
-    content: |
-      Dir::Cache "/tmp/apt";
-      Dir::Cache::archives "/var/cache/apt/archives";
-      Dir::Cache::pkgcache "";
-      Dir::Cache::srcpkgcache "";
     mode: "0644"
   tags: apt
 
@@ -137,6 +136,16 @@
   when:
     - inventory_hostname in groups['pi_server']
     - ansible_distribution_major_version == "12"
+  tags: fstabsetup
+
+- name: Obtain system PARTUUID for /boot/efi
+  become: true
+  ansible.builtin.command: "findmnt -no PARTUUID /boot/efi"
+  register: var_part_boot_efi
+  changed_when: false
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version == "13"
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /

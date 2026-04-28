@@ -86,3 +86,46 @@
     - ansible_distribution_major_version == "12"
     - inventory_hostname in groups['pi_server']
   tags: basepackages
+
+
+- name: Install OS Base Packages Debian 13
+  become: true
+  ansible.builtin.apt:
+    install_recommends: true
+    update_cache: true
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - aptitude
+      - dnsutils
+      - screen
+      - python3-apt
+      - debian-archive-keyring
+      - locales-all
+      - rsync
+      - wget
+      - curl
+      - vim
+      - git
+      - iotop
+  when: ansible_distribution_major_version == "13"
+  tags: basepackages
+
+- name: Install OS Base RPi Packages Debian 13
+  become: true
+  ansible.builtin.apt:
+    install_recommends: true
+    update_cache: true
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - dkms
+      - xkbset
+      - raspberrypi-kernel-headers
+      - ttf-mscorefonts-installer
+  when:
+    - ansible_distribution_major_version == "13"
+    - inventory_hostname in groups['pi_server']
+  tags: basepackages
