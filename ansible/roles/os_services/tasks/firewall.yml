@@ -104,7 +104,6 @@
   loop: "{{ config_firewall_ntp_ips }}"
   tags: firewall
 
-
 - name: Allow certbot/letsencrypt connect to specific IPs
   become: true
   ufw:
@@ -132,4 +131,3 @@
   ufw:
     state: enabled
   tags: firewall
-

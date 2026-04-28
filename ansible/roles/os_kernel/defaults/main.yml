@@ -4,4 +4,3 @@ has_bluetooth: false
 has_usb: false
 has_firewire: false
 has_wifi: false
-

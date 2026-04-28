@@ -7,7 +7,7 @@
     install_recommends: true
     name: "{{ packages }}"
     state: present
-    #dpkg_options: 'force-confnew'
+    # dpkg_options: 'force-confnew'
   vars:
     packages:
       - openssh-server
@@ -211,4 +211,3 @@
     state: reloaded
   changed_when: false
   tags: ssh
-

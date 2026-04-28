@@ -217,7 +217,7 @@
     replace: "elevator={{item}} "
     regexp: 'elevator=[a-z]*\s?'
   with_items:
-  - kyber
+    - kyber
   when: inventory_hostname in groups['pi_server']
   tags: kernelscheduler
 
@@ -237,4 +237,3 @@
     state: present
   when: inventory_hostname in groups['pi_server']
   tags: kernelscheduler
-

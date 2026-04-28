@@ -86,4 +86,3 @@
     - ansible_distribution_major_version == "12"
     - inventory_hostname in groups['pi_server']
   tags: basepackages
-

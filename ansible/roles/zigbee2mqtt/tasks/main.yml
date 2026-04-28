@@ -33,23 +33,23 @@
 
 - name: Download source files from github
   git:
-      repo: https://github.com/Koenkk/zigbee2mqtt.git
-      dest: /opt/zigbee2mqtt
-      depth: 1
-      update: false
-      version: HEAD
+    repo: https://github.com/Koenkk/zigbee2mqtt.git
+    dest: /opt/zigbee2mqtt
+    depth: 1
+    update: false
+    version: HEAD
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Install dependencies
   command: npm ci
   args:
-      chdir: /opt/zigbee2mqtt
+    chdir: /opt/zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Build
   command: npm run build
   args:
-      chdir: /opt/zigbee2mqtt
+    chdir: /opt/zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.install
 
 - name: Setup configuration.yaml

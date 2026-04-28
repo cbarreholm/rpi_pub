@@ -32,7 +32,6 @@
     mode: '0644'
   notify: Restart fail2ban
 
-
 - name: Copy nginx-noscript.conf
   become: true
   copy:
@@ -42,7 +41,3 @@
     group: root
     mode: '0644'
   notify: Restart fail2ban
-
-
-
-

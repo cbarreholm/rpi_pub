@@ -19,7 +19,7 @@
     regexp: '^#\$ActionFileDefaultTemplate(.*)'
     line: '$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
     validate: 'rsyslogd -N1 -f %s'
-    #validate: 'rsyslogd -N1 %s'
+    # validate: 'rsyslogd -N1 %s'
   tags: rsyslog
 
 - name: Restart rsyslog
@@ -29,4 +29,3 @@
     state: restarted
   changed_when: false
   tags: rsyslog
-

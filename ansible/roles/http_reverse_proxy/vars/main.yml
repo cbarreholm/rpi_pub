@@ -7,8 +7,7 @@
 
 config_nginx_site_src_dir: 'nginx/'
 
-#nginx_site: 'sample-reverse-proxy-bootstrap.conf'
-#nginx_site_https: 'sample-reverse-proxy-https.conf'
-#nginx_certbot_domains: 'example.com,www.example.com'
-#nginx_certbot_primary_domain: 'example.com'  # first domain in nginx_certbot_domains; used as the cert directory name by certbot
-
+# nginx_site: 'sample-reverse-proxy-bootstrap.conf'
+# nginx_site_https: 'sample-reverse-proxy-https.conf'
+# nginx_certbot_domains: 'example.com,www.example.com'
+# nginx_certbot_primary_domain: 'example.com'  # first domain in nginx_certbot_domains; used as the cert directory name by certbot

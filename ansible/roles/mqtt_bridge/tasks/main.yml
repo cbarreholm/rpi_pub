@@ -37,9 +37,9 @@
 - name: Download source files from github
   become: true
   git:
-      repo: https://github.com/ThomDietrich/miflora-mqtt-daemon.git
-      dest: /opt/miflora-mqtt-daemon
-      version: 50649b39f30faef6d8e04711e06c13583d16f7f8
+    repo: https://github.com/ThomDietrich/miflora-mqtt-daemon.git
+    dest: /opt/miflora-mqtt-daemon
+    version: 50649b39f30faef6d8e04711e06c13583d16f7f8
   tags: mi_flora
 
 
@@ -47,7 +47,7 @@
   become: true
   command: pip3 install -r requirements.txt
   args:
-      chdir: /opt/miflora-mqtt-daemon
+    chdir: /opt/miflora-mqtt-daemon
 
 - name: Copy configuration in place
   become: true
