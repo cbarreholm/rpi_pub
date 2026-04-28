@@ -1,6 +1,7 @@
 ---
 
-- hosts: mosquitto_server
+- name: Prepare Mosquitto MQTT broker
+  hosts: mosquitto_server
   gather_facts: True
   roles:
     - { role: mosquitto, tags: mosquitto }

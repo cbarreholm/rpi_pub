@@ -6,14 +6,18 @@ The workflow is to work through each task one at a time with a clear context for
 
 Run syntax check as a final verification before finishing.
 
-Mark the task done in this file when verification is done to track progress. Then remind me to clear the context before proceeding with next task. Suggest the following sample prompt to trigger the workflow:
+Mark the task done in this file when verification is done to track progress. Suggest a commit message.
+
+Then remind me to clear the context before proceeding with next task. 
+
+Suggest the following sample prompt to trigger the workflow:
 > Read plans/lint-plan.md and follow the workflow described to address the findings.
 
 ## Tasks
 
 | Task | Rule(s) | Description | Spec | Occurrences |
 |------|---------|-------------|------|-------------|
-| [ ] 01 | `name[play]` | Add names to all plays | [lint-01-play-names.md](../specs/lint-01-play-names.md) | 5 |
+| [x] 01 | `name[play]` | Add names to all plays | [lint-01-play-names.md](../specs/lint-01-play-names.md) | 5 |
 | [ ] 02 | `name[missing]` `name[casing]` `name[template]` | Fix task naming issues | [lint-02-task-names.md](../specs/lint-02-task-names.md) | 14 |
 | [ ] 03 | `yaml[truthy]` | Replace `yes`/`no` with `true`/`false` | [lint-03-truthy-values.md](../specs/lint-03-truthy-values.md) | 134 |
 | [ ] 04 | `yaml[trailing-spaces]` | Remove trailing whitespace | [lint-04-trailing-spaces.md](../specs/lint-04-trailing-spaces.md) | 120 |

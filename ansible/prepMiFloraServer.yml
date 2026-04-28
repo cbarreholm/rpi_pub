@@ -1,6 +1,7 @@
 ---
 
-- hosts: mi_flora_server
+- name: Prepare Mi Flora server
+  hosts: mi_flora_server
   gather_facts: True
   roles:
     - { role: mqtt_bridge, tags: mi_flora }
