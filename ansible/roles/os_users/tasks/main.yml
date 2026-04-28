@@ -53,3 +53,58 @@
     append: true
   when: ansible_user_id != platform_default_user
   tags: ssh
+
+
+- name: Create alt-admins group
+  become: true
+  ansible.builtin.group:
+    name: alt-admins
+    state: present
+  when: additional_admin_users | length > 0
+  tags: users
+
+- name: Configure passwordless sudo for alt-admins group
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/099_alt-admins-nopasswd
+    content: "%alt-admins ALL=(ALL) NOPASSWD: ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: /usr/sbin/visudo -cf %s
+  when: additional_admin_users | length > 0
+  tags: users
+
+- name: Create additional admin user accounts
+  become: true
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
+    create_home: true
+    password_lock: true
+  loop: "{{ additional_admin_users }}"
+  when: additional_admin_users | length > 0
+  tags: users
+
+- name: Configure SSH authorized key for additional admin users
+  become: true
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_public_key }}"
+    state: present
+    exclusive: false
+  loop: "{{ additional_admin_users }}"
+  when: additional_admin_users | length > 0
+  tags: users
+
+- name: Add additional admin users to alt-admins and ssh-users groups
+  become: true
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    groups:
+      - alt-admins
+      - ssh-users
+    append: true
+  loop: "{{ additional_admin_users }}"
+  when: additional_admin_users | length > 0
+  tags: users

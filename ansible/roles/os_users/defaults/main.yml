@@ -1,3 +1,11 @@
 ---
 # defaults file for OS users
 platform_default_user: pi
+
+# List of additional admin users to provision.
+# Define the real value in ansible/secrets/secrets_file.enc (ansible-vault),
+# NOT in inventory or host_vars — usernames and SSH keys are sensitive intel.
+# Each entry must have:
+#   name: <string>           — the username
+#   ssh_public_key: <string> — the full public key line
+additional_admin_users: []

@@ -1,2 +1,14 @@
 ---
 # vars file for OS users
+
+# additional_admin_users
+#   Type: list of mappings
+#   Secret: YES — define in ansible/secrets/secrets_file.enc (ansible-vault encrypted),
+#           never in plaintext inventory or host_vars files.
+#   Fields:
+#     name (string, required)          — the username to create
+#     ssh_public_key (string, required) — the full authorized_key line for the user
+#   Example entry in secrets_file (before encryption):
+#     additional_admin_users:
+#       - name: alice
+#         ssh_public_key: "ssh-ed25519 AAAA... alice@host"

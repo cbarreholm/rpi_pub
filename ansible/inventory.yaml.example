@@ -5,8 +5,11 @@ all:
       hosts:
         miflora:
           config_system_hostname: "{{host_miflora_config_system_hostname}}"
-          ansible_user: "{{ host_alt_user }}" 
+          ansible_user: "{{ host_alt_user }}"
           ansible_port: 22
+          # additional_admin_users:          # optional — omit if not needed
+          #   - name: someuser
+          #     ssh_public_key: "ssh-ed25519 AAAA... someuser@somehost"
           firewall_outbound_dns_ips: # Check with: resolvconf -l
             - "{{subnet_primary_slash24}}.1"
           firewall_inbound_http_port: "80"
