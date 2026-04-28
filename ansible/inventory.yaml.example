@@ -81,3 +81,6 @@ all:
         #   firewall_outbound_upstream_ip: "{{host_reverseproxy_upstream_ip}}"
         #   firewall_outbound_upstream_port: "{{host_reverseproxy_upstream_port}}"
         #   requires_bluetooth: false
+        #   secondary_disk_device: /dev/vdb
+        #   secondary_disk_mount_path: /srv
+

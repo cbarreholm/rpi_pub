@@ -83,7 +83,7 @@ secondary_disk_mount_path: ""
 In inventory, for a host with a secondary disk:
 ```yaml
 secondary_disk_device: /dev/vdb
-secondary_disk_mount_path: /opt
+secondary_disk_mount_path: /srv
 ```
 
 ## Dependencies
