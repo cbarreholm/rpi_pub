@@ -3,7 +3,7 @@
 
 - name: Install ufw firewall package  (if not present)
   become: true
-  apt: 
+  apt:
     install_recommends: true
     name: "ufw"
     state: present
@@ -27,7 +27,7 @@
 - name: Firewall limit ssh
   become: true
   ufw:
-    rule: limit 
+    rule: limit
     to_port: ssh
     proto: tcp
   tags: firewall
@@ -35,7 +35,7 @@
 - name: Allow HTTP
   become: true
   ufw:
-    rule: allow 
+    rule: allow
     to_port: "{{ firewall_inbound_http_port }}"
     proto: tcp
   when: firewall_inbound_http_port | length > 0
@@ -44,7 +44,7 @@
 - name: Allow HTTPS
   become: true
   ufw:
-    rule: allow 
+    rule: allow
     to_port: "{{ firewall_inbound_https_port }}"
     proto: tcp
   when: firewall_inbound_https_port | length > 0
@@ -53,7 +53,7 @@
 - name: Allow MQTT
   become: true
   ufw:
-    rule: allow 
+    rule: allow
     to_port: "{{ firewall_inbound_mqtt_port }}"
     proto: tcp
   when: firewall_inbound_mqtt_port | length > 0
@@ -86,10 +86,10 @@
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ item }}" 
+    to_ip: "{{ item }}"
     to_port: http
     proto: tcp
-  loop: "{{ config_firewall_apt_update_ips }}"    
+  loop: "{{ config_firewall_apt_update_ips }}"
   tags: firewall
 
 - name: Allow ntp to connect to specific IPs
@@ -98,10 +98,10 @@
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ item }}" 
+    to_ip: "{{ item }}"
     to_port: ntp
     proto: udp
-  loop: "{{ config_firewall_ntp_ips }}"    
+  loop: "{{ config_firewall_ntp_ips }}"
   tags: firewall
 
 
@@ -110,10 +110,10 @@
   ufw:
     rule: allow
     direction: out
-    to_ip: "{{ item }}" 
+    to_ip: "{{ item }}"
     to_port: https
     proto: tcp
-  loop: "{{ config_firewall_letsencrypt_ips }}"    
+  loop: "{{ config_firewall_letsencrypt_ips }}"
   tags: firewall
 
 - name: Allow outbound to upstream service

@@ -3,14 +3,14 @@
 
 - name: Install Packages needed for mosquitto
   become: true
-  apt: 
+  apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      - mosquitto 
+      - mosquitto
   tags: mosquitto
 
 - name: Touch pwfile
@@ -26,30 +26,30 @@
 
 - name: Setup global.conf
   become: true
-  template: 
+  template:
     src: conf.d/global.conf.j2
     dest: /etc/mosquitto/conf.d/global.conf
     backup: false
   changed_when: false
-  tags: mosquitto,mosquitto.configuration  
+  tags: mosquitto,mosquitto.configuration
 
 - name: Setup listener.conf
   become: true
-  template: 
+  template:
     src: conf.d/listener.conf.j2
     dest: /etc/mosquitto/conf.d/listener.conf
     backup: false
   changed_when: false
-  tags: mosquitto,mosquitto.configuration  
+  tags: mosquitto,mosquitto.configuration
 
 - name: Setup bridge.conf
   become: true
-  template: 
+  template:
     src: conf.d/bridge.conf.j2
     dest: /etc/mosquitto/conf.d/bridge.conf
     backup: false
   changed_when: false
-  tags: mosquitto,mosquitto.configuration  
+  tags: mosquitto,mosquitto.configuration
 
 - name: Reload service
   become: true

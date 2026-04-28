@@ -3,21 +3,21 @@
 
 - name: Install Packages needed for zigbee2mqtt
   become: true
-  apt: 
+  apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      - nodejs 
+      - nodejs
       - npm
       - git
   tags: zigbee2mqtt
 
 - name: Create directory for source files
   become: true
-  file: 
+  file:
     path: /opt/zigbee2mqtt
     state: directory
     owner: "{{ host_alt_user }}"
@@ -33,7 +33,7 @@
 
 - name: Download source files from github
   git:
-      repo: https://github.com/Koenkk/zigbee2mqtt.git 
+      repo: https://github.com/Koenkk/zigbee2mqtt.git
       dest: /opt/zigbee2mqtt
       depth: 1
       update: false
@@ -54,7 +54,7 @@
 
 - name: Setup configuration.yaml
   become: true
-  template: 
+  template:
     src: zigbee2mqtt/configuration.yaml.j2
     dest: /opt/zigbee2mqtt/data/configuration.yaml
     backup: true
@@ -63,7 +63,7 @@
 
 - name: Setup systemd service
   become: true
-  template: 
+  template:
     src: zigbee2mqtt/zigbee2mqtt.service.j2
     dest: /etc/systemd/system/zigbee2mqtt.service
   tags: zigbee2mqtt,zigbee2mqtt.service
@@ -76,7 +76,7 @@
     name: zigbee2mqtt
   tags: zigbee2mqtt,zigbee2mqtt.service
 
-- name: Enable service 
+- name: Enable service
   become: true
   ansible.builtin.systemd:
     enabled: true

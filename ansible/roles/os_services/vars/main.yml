@@ -5,8 +5,8 @@
 # Firewall configuration variables
 ##################################
 
-# Allow 
-config_firewall_apt_update_ips:  
+# Allow
+config_firewall_apt_update_ips:
   # /etc/apt/sources.list - archive.raspbian.org
   - 93.93.128.191
 

@@ -20,7 +20,7 @@ Suggest the following sample prompt to trigger the workflow:
 | [x] 01 | `name[play]` | Add names to all plays | [lint-01-play-names.md](../specs/lint-01-play-names.md) | 5 |
 | [x] 02 | `name[missing]` `name[casing]` `name[template]` | Fix task naming issues | [lint-02-task-names.md](../specs/lint-02-task-names.md) | 14 |
 | [x] 03 | `yaml[truthy]` | Replace `yes`/`no` with `true`/`false` | [lint-03-truthy-values.md](../specs/lint-03-truthy-values.md) | 134 |
-| [ ] 04 | `yaml[trailing-spaces]` | Remove trailing whitespace | [lint-04-trailing-spaces.md](../specs/lint-04-trailing-spaces.md) | 120 |
+| [x] 04 | `yaml[trailing-spaces]` | Remove trailing whitespace | [lint-04-trailing-spaces.md](../specs/lint-04-trailing-spaces.md) | 120 |
 | [ ] 05 | `yaml[new-line-at-end-of-file]` | Add missing newline at end of files | [lint-05-newline-eof.md](../specs/lint-05-newline-eof.md) | 33 |
 | [ ] 06 | `yaml[indentation]` `yaml[empty-lines]` `yaml[comments]` | Fix miscellaneous YAML formatting | [lint-06-yaml-formatting.md](../specs/lint-06-yaml-formatting.md) | 16 |
 | [ ] 07 | `fqcn[action-core]` | Use FQCN for builtin modules | [lint-07-fqcn-builtin.md](../specs/lint-07-fqcn-builtin.md) | 106 |

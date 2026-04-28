@@ -3,7 +3,7 @@
 
 - name: Install openssh-server package (if not present)
   become: true
-  apt: 
+  apt:
     install_recommends: true
     name: "{{ packages }}"
     state: present
@@ -15,8 +15,8 @@
 
 - name: Configure SSH Service (Port 22)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#Port(.*)'
     line: 'Port 22'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -24,8 +24,8 @@
 
 - name: Configure SSH Service (AddressFamily inet)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#AddressFamily(.*)'
     line: 'AddressFamily inet'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -33,8 +33,8 @@
 
 - name: Configure SSH Service (ListenAddress 0.0.0.0)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#ListenAddress 0.0.0.0'
     line: 'ListenAddress 0.0.0.0'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -42,8 +42,8 @@
 
 - name: Configure SSH Service (AllowTcpForwarding no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#AllowTcpForwarding(.*)'
     line: 'AllowTcpForwarding no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -51,8 +51,8 @@
 
 - name: Configure SSH Service (ClientAliveCountMax 2)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#ClientAliveCountMax(.*)'
     line: 'ClientAliveCountMax 2'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -60,8 +60,8 @@
 
 - name: Configure SSH Service (MaxAuthTries 3)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#MaxAuthTries(.*)'
     line: 'MaxAuthTries 3'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -69,8 +69,8 @@
 
 - name: Configure SSH Service (MaxSessions 2)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#MaxSessions(.*)'
     line: 'MaxSessions 2'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -78,8 +78,8 @@
 
 - name: Configure SSH Service (TCPKeepAlive no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#TCPKeepAlive(.*)'
     line: 'TCPKeepAlive no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -87,8 +87,8 @@
 
 - name: Configure SSH Service (X11Forwarding no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^X11Forwarding(.*)'
     line: 'X11Forwarding no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -96,8 +96,8 @@
 
 - name: Configure SSH Service (AllowAgentForwarding no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#AllowAgentForwarding(.*)'
     line: 'AllowAgentForwarding no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -105,8 +105,8 @@
 
 - name: Configure SSH Service (Compression no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#Compression(.*)'
     line: 'Compression no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -169,8 +169,8 @@
 
 - name: Configure SSH Service (PermitRootLogin no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#PermitRootLogin(.*)'
     line: 'PermitRootLogin no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -178,8 +178,8 @@
 
 - name: Configure SSH Service (PasswordAuthentication no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#PasswordAuthentication(.*)'
     line: 'PasswordAuthentication no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -188,8 +188,8 @@
 
 - name: Configure SSH Service (UsePAM no)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#UsePAM(.*)'
     line: 'UsePAM no'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -197,8 +197,8 @@
 
 - name: Configure SSH Service (AllowGroups ssh-users)
   become: true
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^#AllowGroups(.*)'
     line: 'AllowGroups ssh-users'
     validate: '/usr/sbin/sshd -T -f %s'
@@ -206,7 +206,7 @@
 
 - name: Reload ssh
   become: true
-  service: 
+  service:
     name: ssh
     state: reloaded
   changed_when: false

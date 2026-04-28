@@ -3,17 +3,17 @@
 
 - name: Install Packages needed for Mi Flora MQTT Bridge
   become: true
-  apt: 
+  apt:
     install_recommends: true
     update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
     packages:
-      - python3 
-      - python3-pip 
-      - bluetooth 
-      - pi-bluetooth 
+      - python3
+      - python3-pip
+      - bluetooth
+      - pi-bluetooth
       - bluez
       - rfkill # Not strictly needed but convenient
   tags: mi_flora
@@ -21,7 +21,7 @@
 
 - name: Create directory for source files
   become: true
-  file: 
+  file:
     path: /opt/miflora-mqtt-daemon
     state: directory
   tags: mi_flora
@@ -69,7 +69,7 @@
     daemon_reload: true
     name: miflora
 
-- name: Enable service 
+- name: Enable service
   become: true
   ansible.builtin.systemd:
     enabled: true

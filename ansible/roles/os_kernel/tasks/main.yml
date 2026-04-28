@@ -194,7 +194,7 @@
 
 - name: Reload Sysctl Changes
   become: true
-  command: sysctl -p 
+  command: sysctl -p
   register: sysctl_status
   changed_when: false
   tags: sysctl
