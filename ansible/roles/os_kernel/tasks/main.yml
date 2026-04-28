@@ -237,3 +237,4 @@
     state: present
   when: inventory_hostname in groups['pi_server']
   tags: kernelscheduler
+

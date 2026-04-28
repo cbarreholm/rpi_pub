@@ -2,3 +2,4 @@
 # defaults file for os
 secondary_disk_device: ""
 secondary_disk_mount_path: ""
+
