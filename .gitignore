@@ -1,4 +1,5 @@
 .DS_Store
+.claude
 plans/security-review*.md
 specs/security-review*.md
 rpi_pub.code-workspace
