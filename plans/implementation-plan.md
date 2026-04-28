@@ -24,4 +24,4 @@ Tasks 18–19 are implementation tasks for Additional User Management (Section 3
 | [x] 16 | Implement secondary disk management | [task-16-secondary-disk.md](../specs/task-16-secondary-disk.md) | §2.6 REQ-DSK-01 – REQ-DSK-05 |
 | [x] 17 | Document playbook applicability in README | [task-17-playbook-applicability.md](../specs/task-17-playbook-applicability.md) | §2.8 REQ-PLY-07 – REQ-PLY-10 |
 | [x] 18 | Implement additional admin users | [task-18-additional-admin-users.md](../specs/task-18-additional-admin-users.md) | §3.1 REQ-AUSR-01 – REQ-AUSR-09 |
-| [ ] 19 | Implement limited users | [task-19-limited-users.md](../specs/task-19-limited-users.md) | §3.2 REQ-LUSR-01 – REQ-LUSR-08 |
+| [x] 19 | Implement limited users | [task-19-limited-users.md](../specs/task-19-limited-users.md) | §3.2 REQ-LUSR-01 – REQ-LUSR-08 |

@@ -1,5 +1,11 @@
 # Learnings
 
+## Running Tests
+- `pytest` is NOT installed. Always run tests with: `python -m unittest discover -s <test-dir> -p "<test-file>.py" -v`
+- Example: `python -m unittest discover -s ansible/roles/os_users/tests -p "test_limited_users.py" -v`
+- Running `python -m unittest ansible/roles/os_users/tests/test_foo.py` fails because Python treats the path as a dotted module name and tries to import `ansible.roles...`.
+- Running `python -m pytest ...` fails because pytest is not installed.
+
 ## Lint
 - `ansible-lint` reports 66 pre-existing violations across all roles (fqcn, risky-file-permissions, yaml[truthy], trailing-spaces, indentation). These are not in scope for verification tasks — note but do not fix unless task explicitly targets lint.
 - No `.ansible-lint` config file exists in the repo.

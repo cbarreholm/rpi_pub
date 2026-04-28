@@ -9,3 +9,13 @@ platform_default_user: pi
 #   name: <string>           — the username
 #   ssh_public_key: <string> — the full public key line
 additional_admin_users: []
+
+# List of limited users to provision (e.g. git shell users).
+# Each entry must have:
+#   name: <string>            — the username
+#   shell: <string>           — the login shell (e.g. /usr/bin/git-shell, /bin/rbash)
+#   ssh_public_key: <string>  — (optional) the full public key line;
+#                               omit to deny SSH login for this user
+# Note: /usr/bin/git-shell must be listed in /etc/shells on the target host.
+#       Debian adds it automatically when the 'git' package is installed.
+additional_limited_users: []

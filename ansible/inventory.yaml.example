@@ -10,6 +10,10 @@ all:
           # additional_admin_users:          # optional — omit if not needed
           #   - name: someuser
           #     ssh_public_key: "ssh-ed25519 AAAA... someuser@somehost"
+          # additional_limited_users:        # optional — omit if not needed
+          #   - name: git
+          #     shell: /usr/bin/git-shell    # any restricted shell, e.g. /bin/rbash
+          #     ssh_public_key: "ssh-ed25519 AAAA... git@somehost"  # omit to deny SSH login
           firewall_outbound_dns_ips: # Check with: resolvconf -l
             - "{{subnet_primary_slash24}}.1"
           firewall_inbound_http_port: "80"
