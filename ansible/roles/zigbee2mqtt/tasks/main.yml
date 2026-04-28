@@ -27,7 +27,7 @@
 # There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
 - name: Disable firewall
   become: true
-  ufw:
+  community.general.ufw:
     state: disabled
   tags: zigbee2mqtt
 
@@ -86,6 +86,6 @@
 
 - name: Enable firewall
   become: true
-  ufw:
+  community.general.ufw:
     state: enabled
   tags: zigbee2mqtt

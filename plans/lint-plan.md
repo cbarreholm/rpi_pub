@@ -24,7 +24,7 @@ Suggest the following sample prompt to trigger the workflow:
 | [x] 05 | `yaml[new-line-at-end-of-file]` | Add missing newline at end of files | [lint-05-newline-eof.md](../specs/lint-05-newline-eof.md) | 33 |
 | [x] 06 | `yaml[indentation]` `yaml[empty-lines]` `yaml[comments]` | Fix miscellaneous YAML formatting | [lint-06-yaml-formatting.md](../specs/lint-06-yaml-formatting.md) | 16 |
 | [x] 07 | `fqcn[action-core]` | Use FQCN for builtin modules | [lint-07-fqcn-builtin.md](../specs/lint-07-fqcn-builtin.md) | 106 |
-| [ ] 08 | `fqcn[action]` | Use FQCN for community modules | [lint-08-fqcn-community.md](../specs/lint-08-fqcn-community.md) | 19 |
+| [x] 08 | `fqcn[action]` | Use FQCN for community modules | [lint-08-fqcn-community.md](../specs/lint-08-fqcn-community.md) | 19 |
 | [ ] 09 | `risky-file-permissions` | Set explicit file permissions | [lint-09-file-permissions.md](../specs/lint-09-file-permissions.md) | 29 |
 | [ ] 10 | `no-changed-when` | Add `changed_when` to command tasks | [lint-10-changed-when.md](../specs/lint-10-changed-when.md) | 5 |
 | [ ] 11 | `meta-incorrect` `schema[meta]` | Fix role metadata | [lint-11-role-metadata.md](../specs/lint-11-role-metadata.md) | 32 |

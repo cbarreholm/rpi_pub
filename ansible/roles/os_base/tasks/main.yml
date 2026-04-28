@@ -12,20 +12,20 @@
 
 - name: Set timezone to '{{ config_timezone }}'
   become: true
-  timezone:
+  community.general.timezone:
     name: "{{ config_timezone }}"
   tags: timezone
 
 - name: Ensure localisation files are available for system locale '{{ config_system_locale }}'
   become: true
-  locale_gen:
+  community.general.locale_gen:
     name: "{{ config_system_locale }}"
     state: present
   tags: locale
 
 - name: Ensure localisation files are available for system language '{{ config_system_language }}'
   become: true
-  locale_gen:
+  community.general.locale_gen:
     name: "{{ config_system_language }}"
     state: present
   tags: locale

@@ -11,14 +11,14 @@
 
 - name: Default deny incoming
   become: true
-  ufw:
+  community.general.ufw:
     default: deny
     direction: incoming
   tags: firewall
 
 - name: Default deny outgoing
   become: true
-  ufw:
+  community.general.ufw:
     default: deny
     direction: outgoing
   tags: firewall
@@ -26,7 +26,7 @@
 # Important to avoid locking us out
 - name: Firewall limit ssh
   become: true
-  ufw:
+  community.general.ufw:
     rule: limit
     to_port: ssh
     proto: tcp
@@ -34,7 +34,7 @@
 
 - name: Allow HTTP
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     to_port: "{{ firewall_inbound_http_port }}"
     proto: tcp
@@ -43,7 +43,7 @@
 
 - name: Allow HTTPS
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     to_port: "{{ firewall_inbound_https_port }}"
     proto: tcp
@@ -52,7 +52,7 @@
 
 - name: Allow MQTT
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     to_port: "{{ firewall_inbound_mqtt_port }}"
     proto: tcp
@@ -61,7 +61,7 @@
 
 - name: Allow DNS connections to DNS server (UDP)
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
@@ -72,7 +72,7 @@
 
 - name: Allow DNS connections to DNS server (TCP)
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
@@ -83,7 +83,7 @@
 
 - name: Allow apt updates to connect to specific IPs
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
@@ -95,7 +95,7 @@
 - name: Allow ntp to connect to specific IPs
   # Important since the pi is missing a RTC and easily looses track of time
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
@@ -106,7 +106,7 @@
 
 - name: Allow certbot/letsencrypt connect to specific IPs
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{ item }}"
@@ -117,7 +117,7 @@
 
 - name: Allow outbound to upstream service
   become: true
-  ufw:
+  community.general.ufw:
     rule: allow
     direction: out
     to_ip: "{{firewall_outbound_upstream_ip}}"
@@ -128,6 +128,6 @@
 
 - name: Enable firewall
   become: true
-  ufw:
+  community.general.ufw:
     state: enabled
   tags: firewall
