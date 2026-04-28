@@ -86,6 +86,7 @@
           "--force-confdef";
           "--force-confold";
       }
+    mode: "0644"
   tags: apt
 
 - name: Fixup APT Cache
@@ -97,6 +98,7 @@
       Dir::Cache::archives "/var/cache/apt/archives";
       Dir::Cache::pkgcache "";
       Dir::Cache::srcpkgcache "";
+    mode: "0644"
   tags: apt
 
 - name: Select raspbian mirror to {{ config_apt_mirror_url }}
@@ -146,7 +148,11 @@
 
 - name: Setup fstab file
   become: true
-  ansible.builtin.template: src={{ item }} dest=/etc/fstab backup=yes
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: /etc/fstab
+    backup: true
+    mode: "0644"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.fstab.j2"
     - "{{ ansible_distribution }}.fstab.j2"

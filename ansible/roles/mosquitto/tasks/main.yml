@@ -30,6 +30,7 @@
     src: conf.d/global.conf.j2
     dest: /etc/mosquitto/conf.d/global.conf
     backup: false
+    mode: "0640"
   changed_when: false
   tags: mosquitto,mosquitto.configuration
 
@@ -39,6 +40,7 @@
     src: conf.d/listener.conf.j2
     dest: /etc/mosquitto/conf.d/listener.conf
     backup: false
+    mode: "0640"
   changed_when: false
   tags: mosquitto,mosquitto.configuration
 
@@ -48,6 +50,7 @@
     src: conf.d/bridge.conf.j2
     dest: /etc/mosquitto/conf.d/bridge.conf
     backup: false
+    mode: "0640"
   changed_when: false
   tags: mosquitto,mosquitto.configuration
 

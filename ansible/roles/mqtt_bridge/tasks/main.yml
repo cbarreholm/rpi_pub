@@ -24,6 +24,7 @@
   ansible.builtin.file:
     path: /opt/miflora-mqtt-daemon
     state: directory
+    mode: "0755"
   tags: mi_flora
 
 # There is probably a better way to ensure that the firewall is enabled again at the end even if something goes wrong
@@ -54,6 +55,7 @@
   ansible.builtin.template:
     src: miflora-mqtt-daemon/config.ini
     dest: /opt/miflora-mqtt-daemon/config.ini
+    mode: "0640"
 
 - name: Copy service in place
   become: true
@@ -61,6 +63,7 @@
     remote_src: true
     src: /opt/miflora-mqtt-daemon/template.service
     dest: /etc/systemd/system/miflora.service
+    mode: "0644"
 
 - name: Reload service
   become: true
