@@ -3,6 +3,8 @@
 Tasks 01–08 are verification tasks for the existing Raspberry Pi baseline (Section 1).
 Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Section 2).
 Tasks 18–19 are implementation tasks for Additional User Management (Section 3).
+Task 20 completes the Section 1 requirements documentation gap.
+Task 21 reverses the `requires_* → has_*` rename from Task 13 so hosts declare required capabilities rather than describe present hardware.
 
 | Task | Description | Spec | Requirements |
 |------|-------------|------|--------------|
@@ -25,3 +27,5 @@ Tasks 18–19 are implementation tasks for Additional User Management (Section 3
 | [x] 17 | Document playbook applicability in README | [task-17-playbook-applicability.md](../specs/task-17-playbook-applicability.md) | §2.8 REQ-PLY-07 – REQ-PLY-10 |
 | [x] 18 | Implement additional admin users | [task-18-additional-admin-users.md](../specs/task-18-additional-admin-users.md) | §3.1 REQ-AUSR-01 – REQ-AUSR-09 |
 | [x] 19 | Implement limited users | [task-19-limited-users.md](../specs/task-19-limited-users.md) | §3.2 REQ-LUSR-01 – REQ-LUSR-08 |
+| [ ] 20 | Complete Section 1 requirements documentation | [task-20-complete-section1-requirements.md](../specs/task-20-complete-section1-requirements.md) | §1.1 – §1.10 |
+| [ ] 21 | Rename `has_*` hardware flags to `requires_*` capability flags | [task-21-rename-has-to-requires.md](../specs/task-21-rename-has-to-requires.md) | §2.3 REQ-KRN-01 – REQ-KRN-04 |
