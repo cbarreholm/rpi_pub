@@ -129,6 +129,40 @@ class TestPlatformGates(unittest.TestCase):
             with self.subTest(package=pkg):
                 self.assertIn(pkg, common_pkgs, f"Common package '{pkg}' must be in ungated task for Debian 10")
 
+    def test_debian13_common_packages_present(self):
+        common_pkgs, _ = self._all_packages_for_version("13")
+        for pkg in COMMON_PACKAGES:
+            with self.subTest(package=pkg):
+                self.assertIn(pkg, common_pkgs, f"Common package '{pkg}' must be in ungated task for Debian 13")
+
+    def test_debian13_rpi_packages_gated_to_pi_server(self):
+        _, rpi_pkgs = self._all_packages_for_version("13")
+        for pkg in ["dkms", "xkbset", "ttf-mscorefonts-installer"]:
+            with self.subTest(package=pkg):
+                self.assertIn(pkg, rpi_pkgs, f"RPi package '{pkg}' must be in a pi_server-gated task for Debian 13")
+
+    def test_debian13_rpi_packages_not_in_common(self):
+        common_pkgs, _ = self._all_packages_for_version("13")
+        for pkg in ["dkms", "xkbset", "ttf-mscorefonts-installer"]:
+            with self.subTest(package=pkg):
+                self.assertNotIn(pkg, common_pkgs, f"RPi package '{pkg}' must NOT be in common task for Debian 13")
+
+    def test_debian13_rpi_uses_dynamic_kernel_headers(self):
+        tasks = self._get_tasks_by_version("13")
+        rpi_tasks = [t for t in tasks if has_pi_server_gate(t)]
+        self.assertTrue(rpi_tasks, "No RPi task found for Debian 13")
+        vars_block = rpi_tasks[0].get("vars", {})
+        self.assertIn("rpi_kernel_variant", vars_block,
+                      "rpi_kernel_variant missing from Debian 13 RPi task vars")
+        packages = vars_block.get("packages", [])
+        dynamic = [p for p in packages if "linux-headers-" in str(p) and "rpi_kernel_variant" in str(p)]
+        self.assertTrue(dynamic, "No dynamic linux-headers-{{ rpi_kernel_variant }} package found in Debian 13 RPi task")
+
+    def test_debian13_rpi_does_not_use_static_raspberrypi_kernel_headers(self):
+        _, rpi_pkgs = self._all_packages_for_version("13")
+        self.assertNotIn("raspberrypi-kernel-headers", rpi_pkgs,
+                         "raspberrypi-kernel-headers must not be used for Debian 13")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

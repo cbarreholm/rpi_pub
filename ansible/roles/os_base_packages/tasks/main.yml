@@ -120,10 +120,11 @@
     name: "{{ packages }}"
     state: present
   vars:
+    rpi_kernel_variant: "{{ ansible_kernel.split('+rpt-')[1] }}"
     packages:
       - dkms
       - xkbset
-      - raspberrypi-kernel-headers
+      - "linux-headers-{{ rpi_kernel_variant }}"
       - ttf-mscorefonts-installer
   when:
     - ansible_distribution_major_version == "13"

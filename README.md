@@ -49,10 +49,10 @@ I'll list some features of this repository and ansible setup. This can also be k
     - aptitude
     - python-apt
     - apt-transport-https
-    - raspberrypi-kernel-headers
+    - raspberrypi-kernel-headers (Debian 10/12) / linux-headers-rpi-&lt;variant&gt; (Debian 13, derived from running kernel)
     - dkms
     - debian-archive-keyring
-    - console-data
+    - console-data (Debian 10 only)
     - xkbset
     - locales-all
     - dnsutils
