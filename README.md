@@ -116,9 +116,9 @@ I'll list some features of this repository and ansible setup. This can also be k
 | `prepMiFloraServer.yml` | any | Bluetooth hardware |
 
 # Pre-requirements and Assumptions
-* Your have burned latest (buster or even bookworm) raspbian (preferably 64 bit) image to SD card
+* Your have burned latest (buster, bookworm or trixie) raspbian (preferably 64 bit) image to SD card
 * You have done 'touch /boot/ssh" to enable headless ssh login
-* You have set up Wifi with wpa_supplicant.conf or for Bookworm use the imager
+* You have set up Wifi with wpa_supplicant.conf or for Bookworm & Trixie use the imager (new enough)
   Or add an out of range connection
 ```
 sudo nmcli connection add type wifi con-name TheConnectionName ssid TheSsId 802-11-wireless-security.key-mgmt WPA-PSK 802-11-wireless-security.psk TheSecret

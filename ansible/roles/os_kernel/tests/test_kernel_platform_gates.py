@@ -66,18 +66,48 @@ class TestKernelPlatformGates(unittest.TestCase):
                       f"pi_server gate missing from Kyber runtime task when: {when!r}")
 
     def test_kyber_persistent_gated_to_pi_server(self):
-        task = self._get_task("Enable Kernel Scheduler (Kyber) on Reboot")
+        task = self._get_task("Enable Kernel Scheduler (Kyber) on Reboot (Persistent)")
         when = get_when_str(task)
         self.assertIn(PI_SERVER_GATE, when,
                       f"pi_server gate missing from Kyber persistence task when: {when!r}")
 
-    # REQ-KRN-08: Wi-Fi power saving tasks gated to pi_server
+    def test_kyber_persistent_rc_local_gated_to_debian_10_12(self):
+        task = self._get_task("Enable Kernel Scheduler (Kyber) on Reboot (Persistent)")
+        when = get_when_str(task)
+        self.assertIn('ansible_distribution_major_version in ["10", "12"]', when,
+                      f"Debian version gate missing from Kyber rc.local task when: {when!r}")
 
-    def test_wifi_powersaving_lineinfile_gated_to_pi_server(self):
-        task = self._get_task("Disable Wi-Fi Power Savings (pi zero w models)")
+    def test_kyber_persistent_udev_exists_for_debian_13(self):
+        task = find_task(self.tasks, "Enable Kernel Scheduler (Kyber) on Reboot via udev")
+        self.assertIsNotNone(task, "Expected a udev Kyber scheduler task for Debian 13")
+
+    def test_kyber_persistent_udev_gated_to_pi_server(self):
+        task = find_task(self.tasks, "Enable Kernel Scheduler (Kyber) on Reboot via udev")
+        self.assertIsNotNone(task, "Expected a udev Kyber scheduler task for Debian 13")
         when = get_when_str(task)
         self.assertIn(PI_SERVER_GATE, when,
-                      f"pi_server gate missing from Wi-Fi power saving lineinfile when: {when!r}")
+                      f"pi_server gate missing from Kyber udev task when: {when!r}")
+
+    def test_kyber_persistent_udev_gated_to_debian_13(self):
+        task = find_task(self.tasks, "Enable Kernel Scheduler (Kyber) on Reboot via udev")
+        self.assertIsNotNone(task, "Expected a udev Kyber scheduler task for Debian 13")
+        when = get_when_str(task)
+        self.assertIn('ansible_distribution_major_version == "13"', when,
+                      f"Debian 13 gate missing from Kyber udev task when: {when!r}")
+
+    # REQ-KRN-08: Wi-Fi power saving tasks gated to pi_server
+
+    def test_wifi_powersaving_rc_local_gated_to_pi_server(self):
+        task = self._get_task("Disable Wi-Fi Power Savings via rc.local")
+        when = get_when_str(task)
+        self.assertIn(PI_SERVER_GATE, when,
+                      f"pi_server gate missing from Wi-Fi rc.local task when: {when!r}")
+
+    def test_wifi_powersaving_networkmanager_gated_to_pi_server(self):
+        task = self._get_task("Disable Wi-Fi Power Savings via NetworkManager")
+        when = get_when_str(task)
+        self.assertIn(PI_SERVER_GATE, when,
+                      f"pi_server gate missing from Wi-Fi NetworkManager task when: {when!r}")
 
     def test_wifi_modprobe_gated_to_pi_server(self):
         task = self._get_task("Disable Wi-Fi Power Saving (non pi zero w models)")

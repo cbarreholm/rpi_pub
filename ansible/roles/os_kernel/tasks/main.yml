@@ -146,8 +146,20 @@
       options 8723bs rtw_power_mgnt=0
       options wlan_8192eu rtw_power_mgnt=0
   when:
-    - not (has_wifi | default(false))
+    - (has_wifi | default(false))
     - inventory_hostname in groups['pi_server']
+  tags: modprobe
+
+# Symmetric with "Disable Bluetooth": when Wi-Fi is not wanted, blacklist the
+# built-in (brcmfmac) Wi-Fi stack to reduce attack surface.
+- name: Disable Wi-Fi modules
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/modprobe.d/disable_wifi.conf"
+    content: |
+      blacklist brcmfmac
+      blacklist brcmutil
+  when: not (has_wifi | default(false))
   tags: modprobe
 
 - name: Ensure Kernel Hardening via Sysctl is present
@@ -199,7 +211,7 @@
   changed_when: false
   tags: sysctl
 
-- name: Disable Wi-Fi Power Savings (pi zero w models)
+- name: Disable Wi-Fi Power Savings via rc.local (Debian 10/12)
   become: true
   ansible.builtin.lineinfile:
     path: /etc/rc.local
@@ -207,14 +219,36 @@
     line: '/sbin/iwconfig wlan0 power off'
     state: present
     backup: true
-  when: inventory_hostname in groups['pi_server']
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version in ["10", "12"]
+    - (has_wifi | default(false))
+  tags: sysctl
+
+# Trixie (Debian 13) uses NetworkManager by default and no longer ships
+# /etc/rc.local, so configure Wi-Fi power saving via an NM drop-in instead.
+- name: Disable Wi-Fi Power Savings via NetworkManager (Debian 13)
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/conf.d/wifi-powersave-off.conf
+    content: |
+      [connection]
+      wifi.powersave = 2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload NetworkManager
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version == "13"
+    - (has_wifi | default(false))
   tags: sysctl
 
 - name: Set Kernel Scheduler (Kyber) boot cmdline (elevator=kyber)
   become: true
   ansible.builtin.replace:
     path: /boot/cmdline.txt
-    ansible.builtin.replace: "elevator={{item}} "
+    replace: "elevator={{item}} "
     regexp: 'elevator=[a-z]*\s?'
   with_items:
     - kyber
@@ -235,5 +269,21 @@
     insertbefore: '^exit 0'
     line: 'echo kyber > /sys/block/mmcblk0/queue/scheduler'
     state: present
-  when: inventory_hostname in groups['pi_server']
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version in ["10", "12"]
+  tags: kernelscheduler
+
+- name: Enable Kernel Scheduler (Kyber) on Reboot via udev (Debian 13)
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/60-kyber-scheduler.rules
+    content: |
+      ACTION=="add|change", KERNEL=="mmcblk0", ATTR{queue/scheduler}="kyber"
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - inventory_hostname in groups['pi_server']
+    - ansible_distribution_major_version == "13"
   tags: kernelscheduler

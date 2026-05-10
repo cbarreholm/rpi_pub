@@ -105,7 +105,7 @@
   ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(?!-security)) (.*) (.*) (.*) (.*)$'
-    ansible.builtin.replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
+    replace: '\1 {{ config_apt_mirror_url }} \3 \4 \5 \6 \7'
   when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
@@ -114,7 +114,7 @@
   ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '^(deb) (http.*) ([a-z]*(-security)) (.*) (.*) (.*) (.*)$'
-    ansible.builtin.replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
+    replace: '\1 {{ config_apt_security_mirror_url }} \3 \5 \6 \7 \8'
   when: inventory_hostname in groups['pi_server']
   tags: apt-sources
 
@@ -135,17 +135,7 @@
   changed_when: false
   when:
     - inventory_hostname in groups['pi_server']
-    - ansible_distribution_major_version == "12"
-  tags: fstabsetup
-
-- name: Obtain system PARTUUID for /boot/efi
-  become: true
-  ansible.builtin.command: "findmnt -no PARTUUID /boot/efi"
-  register: var_part_boot_efi
-  changed_when: false
-  when:
-    - inventory_hostname in groups['pi_server']
-    - ansible_distribution_major_version == "13"
+    - ansible_distribution_major_version in ["12", "13"]
   tags: fstabsetup
 
 - name: Obtain system PARTUUID for /
@@ -169,13 +159,25 @@
   when: inventory_hostname in groups['pi_server']
   tags: fstabsetup
 
+- name: Stat /etc/dphys-swapfile
+  become: true
+  ansible.builtin.stat:
+    path: /etc/dphys-swapfile
+  register: var_dphys_swapfile
+  when: inventory_hostname in groups['pi_server']
+  tags: swapsize
+
+# dphys-swapfile is not installed by default on Raspberry Pi OS Trixie (Debian 13);
+# only adjust CONF_SWAPSIZE when the config file is actually present.
 - name: Set Swap File Size (256M)
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/dphys-swapfile
     regexp: "^CONF_SWAPSIZE=(.*)"
     line: "CONF_SWAPSIZE=256"
-  when: inventory_hostname in groups['pi_server']
+  when:
+    - inventory_hostname in groups['pi_server']
+    - var_dphys_swapfile.stat.exists
   tags: swapsize
 
 - name: Set hostname '{{config_system_hostname}}'
@@ -189,7 +191,7 @@
   ansible.builtin.replace:
     dest: /etc/hosts
     regexp: "^(127.0.1.1)(\\s)*(raspberrypi)$"
-    ansible.builtin.replace: '\1\2{{config_system_hostname}}'
+    replace: '\1\2{{config_system_hostname}}'
   when: inventory_hostname in groups['pi_server']
   tags: hostname
 

@@ -1,2 +1,7 @@
 ---
 # handlers file for os_kernel
+
+- name: Reload NetworkManager
+  become: true
+  ansible.builtin.command: nmcli general reload
+  changed_when: false

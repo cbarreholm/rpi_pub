@@ -92,6 +92,52 @@ class TestKernelHostVars(unittest.TestCase):
         self.assertIn("has_wifi", when,
                        f"'has_wifi' not in when: {when!r}")
 
+    def test_wifi_power_saving_when_is_positive(self):
+        # Task 13 follow-up: Wi-Fi power-saving tweaks should apply only when
+        # Wi-Fi is actually in use (has_wifi=true). The previous `not has_wifi`
+        # gate was a copy-paste from the parallel module-blacklist tasks.
+        task = self._get_task("Disable Wi-Fi Power Saving (non pi zero w models)")
+        when = get_when_str(task)
+        self.assertNotIn("not (has_wifi", when,
+                          f"Wi-Fi power-saving gate should be positive, not negated: {when!r}")
+        self.assertNotIn("not has_wifi", when,
+                          f"Wi-Fi power-saving gate should be positive, not negated: {when!r}")
+
+    def test_wifi_rc_local_task_uses_has_wifi_positive(self):
+        task = self._get_task("Disable Wi-Fi Power Savings via rc.local")
+        when = get_when_str(task)
+        self.assertIn("has_wifi", when,
+                       f"'has_wifi' not in when: {when!r}")
+        self.assertNotIn("not (has_wifi", when,
+                          f"rc.local Wi-Fi gate should be positive: {when!r}")
+        self.assertNotIn("not has_wifi", when,
+                          f"rc.local Wi-Fi gate should be positive: {when!r}")
+
+    def test_wifi_nm_task_uses_has_wifi_positive(self):
+        task = self._get_task("Disable Wi-Fi Power Savings via NetworkManager")
+        when = get_when_str(task)
+        self.assertIn("has_wifi", when,
+                       f"'has_wifi' not in when: {when!r}")
+        self.assertNotIn("not (has_wifi", when,
+                          f"NetworkManager Wi-Fi gate should be positive: {when!r}")
+        self.assertNotIn("not has_wifi", when,
+                          f"NetworkManager Wi-Fi gate should be positive: {when!r}")
+
+    def test_wifi_disable_modules_task_exists(self):
+        # Task 13 follow-up: parallel to "Disable Bluetooth", a task that
+        # blacklists the built-in Wi-Fi modules when has_wifi=false.
+        task = find_task(self.tasks, "Disable Wi-Fi modules")
+        self.assertIsNotNone(task, "Expected a 'Disable Wi-Fi modules' task to exist")
+
+    def test_wifi_disable_modules_uses_has_wifi_negated(self):
+        task = find_task(self.tasks, "Disable Wi-Fi modules")
+        self.assertIsNotNone(task, "Expected a 'Disable Wi-Fi modules' task to exist")
+        when = get_when_str(task)
+        self.assertIn("has_wifi", when,
+                       f"'has_wifi' not in when: {when!r}")
+        self.assertIn("not", when,
+                       f"Expected negation in Disable Wi-Fi modules when: {when!r}")
+
     def test_defaults_has_bluetooth_is_false(self):
         self.assertIn("has_bluetooth", self.defaults,
                        "has_bluetooth missing from defaults")
