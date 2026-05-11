@@ -49,6 +49,8 @@ REQ-BASE-14: The `os_base` role shall configure the Raspbian APT mirror to the v
 
 REQ-PKG-01: The `os_base_packages` role shall install a defined set of base packages including: `aptitude`, `dkms`, `xkbset`, `dnsutils`, `screen`, `python3-apt`, `raspberrypi-kernel-headers`, `debian-archive-keyring`, `locales-all`, `rsync`, `wget`, `curl`, `vim`, `git`, `ttf-mscorefonts-installer`, and `iotop`.
 
+REQ-PKG-02: On Debian 13 pi_server hosts, the `os_base_packages` role shall install `wireless-regdb` to provide the kernel regulatory database (`/lib/firmware/regulatory.db`) required for cfg80211 / Wi-Fi operation.
+
 ### 1.4 Kernel
 
 REQ-KRN-01: The `os_kernel` role shall blacklist unused filesystem kernel modules: `cramfs`, `dccp`, `freevxfs`, `hfs`, `hfsplus`, `jffs2`, `rds`, `sctp`, `squashfs`, `tipc`, and `udf`.

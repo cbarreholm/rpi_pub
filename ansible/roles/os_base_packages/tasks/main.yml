@@ -126,6 +126,7 @@
       - xkbset
       - "linux-headers-{{ rpi_kernel_variant }}"
       - ttf-mscorefonts-installer
+      - wireless-regdb
   when:
     - ansible_distribution_major_version == "13"
     - inventory_hostname in groups['pi_server']
