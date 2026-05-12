@@ -27,6 +27,23 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: username.rolename, x: 42 }
 
+Operating Notes
+---------------
+
+### Unban an IP from the nginx-mtls jail
+
+The `nginx-mtls` jail bans source IPs that complete the TLS handshake but fail client certificate verification (10 failures within 60 seconds → 1 hour ban). Typical trigger: a mobile client whose client certificate has expired retries in the background.
+
+Unban a specific IP (e.g. after issuing a replacement client certificate):
+
+    sudo fail2ban-client set nginx-mtls unbanip <ip>
+
+Inspect current ban state:
+
+    sudo fail2ban-client status nginx-mtls
+
+Tuning lives in `files/fail2ban/jail.local`; the matching filter is `files/fail2ban/nginx-mtls.conf`.
+
 License
 -------
 

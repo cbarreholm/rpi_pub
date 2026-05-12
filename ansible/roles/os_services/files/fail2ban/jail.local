@@ -23,3 +23,12 @@ filter = nginx-badbots
 logpath = %(nginx_access_log)s
 maxretry = 1
 bantime = 30d
+
+[nginx-mtls]
+enabled = true
+port = http,https
+filter = nginx-mtls
+logpath = /var/log/nginx/access.json
+maxretry = 10
+findtime = 60
+bantime = 1h
