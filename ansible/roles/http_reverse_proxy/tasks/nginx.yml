@@ -83,7 +83,7 @@
 - name: Deploy HTTP-only config for Let's Encrypt bootstrap
   become: true
   ansible.builtin.template:
-    src: "{{ config_nginx_site_src_dir }}{{ nginx_site }}"
+    src: "{{ config_nginx_site_src_dir }}{{ nginx_site_bootstrap }}"
     dest: /etc/nginx/sites-available/{{ nginx_site }}
     owner: root
     group: root
