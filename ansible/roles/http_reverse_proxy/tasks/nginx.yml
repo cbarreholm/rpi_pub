@@ -73,6 +73,7 @@
 # Check whether a Let's Encrypt certificate has already been issued.
 # This controls whether we are in bootstrap mode (first run) or normal mode.
 - name: Check if Let's Encrypt certificate exists
+  become: true
   ansible.builtin.stat:
     path: /etc/letsencrypt/live/{{ nginx_certbot_primary_domain }}/fullchain.pem
   register: cert_stat
