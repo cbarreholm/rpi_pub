@@ -5,7 +5,7 @@ Tasks 09–17 are implementation tasks for Generic Debian Platform Support (Sect
 Tasks 18–19 are implementation tasks for Additional User Management (Section 3).
 Task 20 completes the Section 1 requirements documentation gap.
 Task 21 reverses the `requires_* → has_*` rename from Task 13 so hosts declare required capabilities rather than describe present hardware.
-Tasks 22–26 address bugs and gaps surfaced during the 2026-05-11 Trixie bring-up investigation (see `plans/trixie-bring-up-rollout.md`).
+Tasks 22–27 address bugs and gaps surfaced during the 2026-05-11 Trixie bring-up investigation (see `plans/trixie-bring-up-rollout.md`).
 
 | Task | Description | Spec | Requirements |
 |------|-------------|------|--------------|
@@ -35,3 +35,4 @@ Tasks 22–26 address bugs and gaps surfaced during the 2026-05-11 Trixie bring-
 | [ ] 24 | Reconcile Trixie cloud-init `manage_etc_hosts` with ansible | [task-24-trixie-cloud-init-etc-hosts.md](../specs/task-24-trixie-cloud-init-etc-hosts.md) | §1.2 REQ-BASE (refinement) |
 | [x] 25 | Drop IPv6 sysctl entries (resolve modprobe/sysctl collision) | [task-25-drop-ipv6-sysctl-entries.md](../specs/task-25-drop-ipv6-sysctl-entries.md) | §1.4 REQ-KRN-02, REQ-KRN-07; §2.3 REQ-KRN-06 (amendment) |
 | [ ] 26 | Disable default exim4 MTA (fails on IPv6-disabled hosts) | [task-26-disable-default-exim4.md](../specs/task-26-disable-default-exim4.md) | §1.8 (refinement — new requirement) |
+| [x] 27 | Prevent nginx postinst auto-start on IPv6-disabled hosts | [task-27-nginx-policy-rc-d.md](../specs/task-27-nginx-policy-rc-d.md) | §1.8 (refinement — same intent as Task 26) |
