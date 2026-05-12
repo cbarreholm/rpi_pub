@@ -65,7 +65,7 @@ REQ-KRN-05: The `os_kernel` role shall blacklist the USB storage kernel module.
 
 REQ-KRN-06: The `os_kernel` role shall disable Wi-Fi power saving for Realtek Wi-Fi modules.
 
-REQ-KRN-07: The `os_kernel` role shall apply sysctl kernel hardening settings, including: disabling SUID core dumps, enabling address space layout randomisation, hardening IPv4 and IPv6 networking parameters, and disabling IPv6.
+REQ-KRN-07: The `os_kernel` role shall apply sysctl kernel hardening settings, including: disabling SUID core dumps, enabling address space layout randomisation, and hardening IPv4 networking parameters. IPv6 disablement is covered by REQ-KRN-02 (modprobe blacklist).
 
 REQ-KRN-08: The `os_kernel` role shall configure the Kyber I/O scheduler for the SD card block device (`mmcblk0`) persistently across reboots.
 
@@ -166,7 +166,7 @@ REQ-KRN-04: While `has_wifi` is false for a host, the `os_kernel` role shall bla
 
 REQ-KRN-05: The `os_kernel` role shall apply sysctl kernel hardening settings on all platforms.
 
-REQ-KRN-06: The `os_kernel` role shall disable IPv6 via sysctl on all platforms.
+REQ-KRN-06: IPv6 disablement is covered by §1.4 REQ-KRN-02 (modprobe blacklist). Sysctl is not used to disable IPv6 because once the module is blacklisted, `/proc/sys/net/ipv6/*` does not exist and the sysctl entries fail to apply.
 
 REQ-KRN-07: While the host is in the `pi_server` group, the `os_kernel` role shall configure the Kyber I/O scheduler for the SD card block device.
 
