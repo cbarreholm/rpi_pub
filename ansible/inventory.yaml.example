@@ -59,6 +59,7 @@ all:
           nginx_site: "sample-reverse-proxy.conf"
           nginx_clientca_crt: "clientCA.crt"
           nginx_certbot_domains: "{{http_reverse_proxy_server_nginx_certbot_domains}}"
+          nginx_certbot_email: "{{http_reverse_proxy_server_nginx_certbot_email}}"
           nginx_server_name: "{{http_reverse_proxy_server_nginx_server_name}}"
           nginx_upstream_ip: "{{host_reverseproxy_upstream_ip}}"
           nginx_upstream_port: "{{host_reverseproxy_upstream_port}}"

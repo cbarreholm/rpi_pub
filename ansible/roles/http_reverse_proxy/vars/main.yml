@@ -10,4 +10,8 @@ config_nginx_site_src_dir: 'nginx/'
 # nginx_site: 'sample-reverse-proxy-bootstrap.conf'
 # nginx_site_https: 'sample-reverse-proxy-https.conf'
 # nginx_certbot_domains: 'example.com,www.example.com'
-# nginx_certbot_primary_domain: 'example.com'  # first domain in nginx_certbot_domains; used as the cert directory name by certbot
+
+# Derived from nginx_certbot_domains: certbot creates
+# /etc/letsencrypt/live/<first-domain>/, so the primary must equal the
+# first comma-separated entry. Single source of truth — do not override.
+nginx_certbot_primary_domain: "{{ nginx_certbot_domains.split(',')[0] | trim }}"
